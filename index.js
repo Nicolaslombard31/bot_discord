@@ -1,10 +1,19 @@
-require('dotenv').config();
+require('dotenv').config()
 
-const Discord = require('discord.js')
-const bot = new Discord.Client()
+const { Client, GatewayIntentBits } = require('discord.js');
 
-bot.on('ready', function () {
-  console.log("Je suis connecté !")
+const bot = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent
+  ]
+});
+
+bot.on('messageCreate', function (message) {
+    if (message.content === '!ping') {
+        message.reply('pong')
+    }
 })
 
-bot.login(process.env.DISCORD_TOKEN)
+bot.login(process.env.DISCORD_TOKEN);
