@@ -16,7 +16,7 @@ bot.on("messageCreate", async (message) => {
 
   if (message.content === "!create") {
       message.reply(
-          "Commande de création lancée ! Envoie maintenant le **nom du salon** et l'**ID de la catégorie** (séparés par un espace)."
+          "Commande de création lancée ! Envoie maintenant le **nom du salon** et le **nom de la catégorie** (séparés par un espace)."
         );
         
         const filter = (m) => m.author.id === message.author.id;
