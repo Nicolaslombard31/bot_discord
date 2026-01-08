@@ -26,6 +26,7 @@ bot.on("ready", async () => {
 
 bot.on("messageReactionAdd", async (reaction, user) => {
     if (user.bot) return;
+    const intervenants = reaction.message.guild.roles.cache.filter(r => r.name.startsWith("i-")).size;
     if (reaction.partial) {
         try {
             await reaction.fetch();
@@ -38,7 +39,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
         const admin = bot.channels.cache.get(process.env.ID_SALON_ADMIN);
         if (admin) {
             const sentMessage = await admin.send(
-            `L'utilisateur <@${user.id}> a demandé le rôle Intervenant.\n Son ID est \`${user.id}\`.`
+            `@Modérateur L'utilisateur <@${user.id}> a demandé le rôle Intervenant.\n Son ID est \`${user.id}\`.`
             );
             await sentMessage.react("✅");
             await sentMessage.react("❌");
@@ -50,12 +51,23 @@ bot.on("messageReactionAdd", async (reaction, user) => {
         const student = await reaction.message.guild.members.fetch(studentId).catch(() => null);
         if (student) {
             const newRole = reaction.message.guild.roles.create({
-                name: `p-${student.user.username}`,
+                name: `i-${intervenants + 1}`,
                 color: 0xff0000,
                 reason: 'Rôle créé pour l\'utilisateur ayant demandé le rôle Intervenant',
             });
             await student.roles.add((await newRole).id);
         }
+        await reaction.message.delete().catch(err => console.error("Erreur suppression:", err));
+    }
+    if (reaction.emoji.name === "❌") {
+        const content = reaction.message.content;
+        const studentId = content.split("`")[1];
+        const student = await reaction.message.guild.members.fetch(studentId).catch(() => null);
+        if (student) {
+            const dmChannel = await student.createDM();
+            dmChannel.send("Votre demande de rôle Intervenant a été refusée.");
+        }
+        await reaction.message.delete().catch(err => console.error("Erreur suppression:", err));
     }
 });
 
