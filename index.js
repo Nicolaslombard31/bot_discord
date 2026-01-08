@@ -8,25 +8,64 @@ const bot = new Client({
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMessageReactions,
   ],
+});
+
+bot.on("ready", async () => {
+  const channel = bot.channels.cache.get(process.env.ID_SALON);
+  if (channel) {
+     const sentMessage = await channel.send(
+      "Choisissez un rôle en réagissant à ce message !:\n👨‍🏫 : Intervenant\n🧑‍🎓 : Etudiant"
+    );
+
+    await sentMessage.react("👨‍🏫");
+    await sentMessage.react("🧑‍🎓");
+  }
+});
+
+bot.on("messageReactionAdd", async (reaction, user) => {
+    if (user.bot) return;
+    if (reaction.partial) {
+        try {
+            await reaction.fetch();
+        } catch (error) {
+            console.error("Erreur lors du fetch de la réaction:", error);
+            return;
+        }
+    }
+    if (reaction.emoji.name === "👨‍🏫") {
+        const admin = bot.channels.cache.get(process.env.ID_SALON_ADMIN);
+        if (admin) {
+            const sentMessage = await admin.send(
+            `L'utilisateur <@${user.id}> a demandé le rôle Intervenant.\n Son ID est \`${user.id}\`.`
+            );
+            await sentMessage.react("✅");
+            await sentMessage.react("❌");
+        }
+    }
+    if (reaction.emoji.name === "✅") {
+        const content = reaction.message.content;
+        const studentId = content.split("`")[1];
+        const student = await reaction.message.guild.members.fetch(studentId).catch(() => null);
+        if (student) {
+            const newRole = reaction.message.guild.roles.create({
+                name: `p-${student.user.username}`,
+                color: 0xff0000,
+                reason: 'Rôle créé pour l\'utilisateur ayant demandé le rôle Intervenant',
+            });
+            await student.roles.add((await newRole).id);
+        }
+    }
 });
 
 bot.on("messageCreate", async (message) => {
   if (message.author.bot) return;
-  //   message.guild.roles
-  //     .create({
-  //       name: "Role Test",
-  //       color: 0x0000ff,
-  //       reason: "Pour tester la création de rôles",
-  //     })
-  //     .then((newRole) => {
-  //       return message.member.roles.add(newRole.id).catch(console.error);
-  //     })
-  //     .catch(console.error);
 
-  const hasRole = message.member.roles.cache.some(
-    (r) => r.name === "Role Test"
-  );
+  const hasRole = message.member.roles.cache.some(function (r) {
+    const role = r.name.split("-");
+    return role[0] === "p";
+  });
 
   if (hasRole && message.content === "!create") {
     message.reply(
