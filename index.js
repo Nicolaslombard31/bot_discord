@@ -7,7 +7,7 @@ const {
   ButtonBuilder,
   ButtonStyle,
 } = require("discord.js");
-let checkemojinegatif = false;
+const listeRefuses = new Set();
 
 const bot = new Client({
   intents: [
@@ -19,8 +19,60 @@ const bot = new Client({
 });
 
 bot.on("ready", async () => {
+  console.log(`✅ Bot EPSI Bordeaux en ligne : ${bot.user.tag}`);
+
+  const channelRules = bot.channels.cache.get(process.env.ID_SALON_RULES);
+  if (channelRules) {
+    const messages = await channelRules.messages.fetch({ limit: 10 });
+    if (messages.size === 0) {
+      const {
+        EmbedBuilder,
+        ActionRowBuilder,
+        ButtonBuilder,
+        ButtonStyle,
+      } = require("discord.js");
+
+      const embedRules = new EmbedBuilder()
+        .setTitle("⚖️ Règlement de la communauté EPSI")
+        .setColor(0x2ecc71)
+        .setDescription(
+          "Bienvenue ! Pour accéder à l'intégralité du serveur, merci de prendre connaissance des règles suivantes :"
+        )
+        .addFields(
+          {
+            name: "🤝 Entraide",
+            value:
+              "Ici on s'entraide sur le code. Pas de jugement sur les erreurs des autres.",
+          },
+          {
+            name: "💬 Respect",
+            value:
+              "Politesse avec les camarades et les intervenants. Utilisez vos vrais noms.",
+          },
+          {
+            name: "💻 Professionnalisme",
+            value: "Utilisez les salons appropriés et soignez votre langage.",
+          }
+        )
+        .setFooter({
+          text: "Clique sur le bouton ci-dessous pour accepter le règlement",
+        });
+
+      const row = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setCustomId("accept_rules")
+          .setLabel("J'ai lu et j'accepte")
+          .setStyle(ButtonStyle.Success)
+      );
+
+      await channelRules.send({ embeds: [embedRules], components: [row] });
+    }
+  }
+
   const channel = bot.channels.cache.get(process.env.ID_SALON);
   if (channel) {
+    const oldMessages = await channel.messages.fetch({ limit: 10 });
+    if (oldMessages.size > 0) await channel.bulkDelete(oldMessages).catch(() => null);
     const sentMessage = await channel.send(
       "Choisissez un rôle en réagissant à ce message !:\n👨‍🏫 : Intervenant, 🎓 : B1, 📖 : B2(SN2), 💻 : B3, 🚀 : M1, 🏆 : M2"
     );
@@ -31,6 +83,20 @@ bot.on("ready", async () => {
     await sentMessage.react("💻");
     await sentMessage.react("🚀");
     await sentMessage.react("🏆");
+  }
+  const channelRE = bot.channels.cache.get(process.env.ID_SALON_RE);
+  if (channelRE) {
+    const oldMessages = await channelRE.messages.fetch({ limit: 10 });
+    if (oldMessages.size > 0) await channelRE.bulkDelete(oldMessages).catch(() => null);
+    const sentMessageRE = await channelRE.send(
+      "Bienvenue dans le salon de Recherche d'Entreprise ! veuillers choisir votre promotion en réagissant à ce message :\n📱 : B3 CDA, ⚙️ : B3 SRB, 🧠 : M1 IA, 🛡️ : M1 cyber, 👨‍💻 : M1 Dev, 🏗️ : M1 infra"
+    );
+    await sentMessageRE.react("📱");
+    await sentMessageRE.react("⚙️");
+    await sentMessageRE.react("🧠");
+    await sentMessageRE.react("🛡️");
+    await sentMessageRE.react("👨‍💻");
+    await sentMessageRE.react("🏗️");
   }
 });
 
@@ -53,7 +119,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
   );
   if (reaction.emoji.name === "👨‍🏫") {
     if (!hasIntervenantRole) {
-      if (!checkemojinegatif) {
+      if (!listeRefuses.has(user.id)) {
         const admin = bot.channels.cache.get(process.env.ID_SALON_ADMIN);
         if (admin) {
           const sentMessage = await admin.send(
@@ -105,13 +171,13 @@ bot.on("messageReactionAdd", async (reaction, user) => {
       .fetch(studentId)
       .catch(() => null);
     if (student) {
+      listeRefuses.add(studentId);
       const dmChannel = await student.createDM();
       dmChannel.send("Votre demande de rôle Intervenant a été refusée.");
     }
     await reaction.message
       .delete()
       .catch((err) => console.error("Erreur suppression:", err));
-    checkemojinegatif = true;
   }
   if (reaction.emoji.name === "🎓") {
     const studentId = user.id;
@@ -183,36 +249,126 @@ bot.on("messageReactionAdd", async (reaction, user) => {
       }
     }
   }
+  if (reaction.emoji.name === "📱") {
+    const studentId = user.id;
+    const student = await reaction.message.guild.members
+      .fetch(studentId)
+      .catch(() => null);
+    if (student) {
+      if (reaction.message.guild.roles.cache.find((r) => r.name === "B3_CDA")) {
+        const role = reaction.message.guild.roles.cache.find(
+          (r) => r.name === "B3_CDA"
+        );
+        await student.roles.add(role.id);
+      }
+    }
+  }
+  if (reaction.emoji.name === "⚙️") {
+    const studentId = user.id;
+    const student = await reaction.message.guild.members
+      .fetch(studentId)
+      .catch(() => null);
+    if (student) {
+      if (reaction.message.guild.roles.cache.find((r) => r.name === "B3_SRB")) {
+        const role = reaction.message.guild.roles.cache.find(
+          (r) => r.name === "B3_SRB"
+        );
+        await student.roles.add(role.id);
+      }
+    }
+  }
+  if (reaction.emoji.name === "🧠") {
+    const studentId = user.id;
+    const student = await reaction.message.guild.members
+      .fetch(studentId)
+      .catch(() => null);
+    if (student) {
+      if (reaction.message.guild.roles.cache.find((r) => r.name === "M1_IA")) {
+        const role = reaction.message.guild.roles.cache.find(
+          (r) => r.name === "M1_IA"
+        );
+        await student.roles.add(role.id);
+      }
+    }
+  }
+  if (reaction.emoji.name === "🛡️") {
+    const studentId = user.id;
+    const student = await reaction.message.guild.members
+      .fetch(studentId)
+      .catch(() => null);
+    if (student) {
+      if (reaction.message.guild.roles.cache.find((r) => r.name === "M1_Cyber")) {
+        const role = reaction.message.guild.roles.cache.find(
+          (r) => r.name === "M1_Cyber"
+        );
+        await student.roles.add(role.id);
+      }
+    }
+  }
+  if (reaction.emoji.name === "👨‍💻") {
+    const studentId = user.id;
+    const student = await reaction.message.guild.members
+      .fetch(studentId)
+      .catch(() => null);
+    if (student) {
+      if (reaction.message.guild.roles.cache.find((r) => r.name === "M1_Dev")) {
+        const role = reaction.message.guild.roles.cache.find(
+          (r) => r.name === "M1_Dev"
+        );
+        await student.roles.add(role.id);
+      }
+    }
+  }
+  if (reaction.emoji.name === "🏗️") {
+    const studentId = user.id;
+    const student = await reaction.message.guild.members
+      .fetch(studentId)
+      .catch(() => null);
+    if (student) {
+      if (reaction.message.guild.roles.cache.find((r) => r.name === "M1_Infra")) {
+        const role = reaction.message.guild.roles.cache.find(
+          (r) => r.name === "M1_Infra"
+        );
+        await student.roles.add(role.id);
+      }
+    }
+  }
 });
 
 bot.on("messageReactionRemove", async (reaction, user) => {
-    if (user.bot) return;
+  if (user.bot) return;
 
-    if (reaction.partial) {
-        try { await reaction.fetch(); } catch (error) { return; }
+  if (reaction.partial) {
+    try {
+      await reaction.fetch();
+    } catch (error) {
+      return;
     }
+  }
 
-    const guild = reaction.message.guild;
-    const member = await guild.members.fetch(user.id).catch(() => null);
-    if (!member) return;
+  const guild = reaction.message.guild;
+  const member = await guild.members.fetch(user.id).catch(() => null);
+  if (!member) return;
 
-    const promos = {
-        "🎓": "B1",
-        "📖": "B2",
-        "💻": "B3",
-        "🚀": "M1",
-        "🏆": "M2"
-    };
+  const promos = {
+    "🎓": "B1",
+    "📖": "B2",
+    "💻": "B3",
+    "🚀": "M1",
+    "🏆": "M2",
+  };
 
-    if (promos[reaction.emoji.name]) {
-        const roleName = promos[reaction.emoji.name];
-        const role = guild.roles.cache.find(r => r.name === roleName);
-        
-        if (role) {
-            await member.roles.remove(role).catch(err => console.error("Erreur retrait rôle:", err));
-            console.log(`Rôle ${roleName} retiré à ${user.username}`);
-        }
+  if (promos[reaction.emoji.name]) {
+    const roleName = promos[reaction.emoji.name];
+    const role = guild.roles.cache.find((r) => r.name === roleName);
+
+    if (role) {
+      await member.roles
+        .remove(role)
+        .catch((err) => console.error("Erreur retrait rôle:", err));
+      console.log(`Rôle ${roleName} retiré à ${user.username}`);
     }
+  }
 });
 
 bot.on("messageCreate", async (message) => {
@@ -280,6 +436,18 @@ bot.on("interactionCreate", async (interaction) => {
       await interaction.reply({
         content:
           "✅ Votre demande d'aide a été envoyée aux modérateurs. Ils reviendront vers vous dès que possible.",
+        ephemeral: true,
+      });
+    }
+  }
+  if (interaction.customId === "accept_rules") {
+    const member = interaction.member;
+    const role = interaction.guild.roles.cache.find((r) => r.name === "Membre");
+    if (role) {
+      await member.roles.add(role.id);
+      await interaction.reply({
+        content:
+          "✅ Merci d'avoir accepté le règlement ! Vous avez maintenant accès au reste du serveur.",
         ephemeral: true,
       });
     }
