@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const { Client, GatewayIntentBits } = require("discord.js");
 const { Channel } = require("node:diagnostics_channel");
+let checkemojinegatif = false;
 
 const bot = new Client({
   intents: [
@@ -16,11 +17,15 @@ bot.on("ready", async () => {
   const channel = bot.channels.cache.get(process.env.ID_SALON);
   if (channel) {
      const sentMessage = await channel.send(
-      "Choisissez un rôle en réagissant à ce message !:\n👨‍🏫 : Intervenant\n🧑‍🎓 : Etudiant"
+      "Choisissez un rôle en réagissant à ce message !:\n👨‍🏫 : Intervenant, 🎓 : B1, 📖 : B2(SN2), 💻 : B3, 🚀 : M1, 🏆 : M2"
     );
 
     await sentMessage.react("👨‍🏫");
-    await sentMessage.react("🧑‍🎓");
+    await sentMessage.react("🎓");
+    await sentMessage.react("📖");
+    await sentMessage.react("💻");
+    await sentMessage.react("🚀");
+    await sentMessage.react("🏆");
   }
 });
 
@@ -35,14 +40,23 @@ bot.on("messageReactionAdd", async (reaction, user) => {
             return;
         }
     }
+    const memberWhoReacted = await reaction.message.guild.members.fetch(user.id);
+    const hasIntervenantRole = memberWhoReacted.roles.cache.some(r => r.name.startsWith("i-"));
     if (reaction.emoji.name === "👨‍🏫") {
-        const admin = bot.channels.cache.get(process.env.ID_SALON_ADMIN);
-        if (admin) {
-            const sentMessage = await admin.send(
-            `@Modérateur L'utilisateur <@${user.id}> a demandé le rôle Intervenant.\n Son ID est \`${user.id}\`.`
-            );
-            await sentMessage.react("✅");
-            await sentMessage.react("❌");
+        if (!hasIntervenantRole) {
+            if (!checkemojinegatif) {
+                const admin = bot.channels.cache.get(process.env.ID_SALON_ADMIN);
+                if (admin) {
+                    const sentMessage = await admin.send(
+                    `@Modérateur L'utilisateur <@${user.id}> a demandé le rôle Intervenant.\n Son ID est \`${user.id}\`.`
+                    );
+                    await sentMessage.react("✅");
+                    await sentMessage.react("❌");
+                }
+            }else{
+                const dmChannel = await user.createDM();
+                dmChannel.send("Votre demande de rôle Intervenant a déjà été refusée et nous ne pouvons plus l'activé.");
+            }
         }
     }
     if (reaction.emoji.name === "✅") {
@@ -68,6 +82,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
             dmChannel.send("Votre demande de rôle Intervenant a été refusée.");
         }
         await reaction.message.delete().catch(err => console.error("Erreur suppression:", err));
+        checkemojinegatif = true;
     }
 });
 
@@ -76,7 +91,7 @@ bot.on("messageCreate", async (message) => {
 
   const hasRole = message.member.roles.cache.some(function (r) {
     const role = r.name.split("-");
-    return role[0] === "p";
+    return role[0] === "i";
   });
 
   if (hasRole && message.content === "!create") {
@@ -116,6 +131,8 @@ bot.on("messageCreate", async (message) => {
           "Temps écoulé ! Tu as mis trop de temps à répondre, commande annulée."
         );
       });
+  }else{
+    message.reply("Vous n'avez pas la permission d'utiliser cette commande.");
   }
 });
 
