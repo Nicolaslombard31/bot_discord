@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const { Client, GatewayIntentBits } = require("discord.js");
+const { Client, GatewayIntentBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { Channel } = require("node:diagnostics_channel");
 let checkemojinegatif = false;
 
@@ -55,7 +55,16 @@ bot.on("messageReactionAdd", async (reaction, user) => {
                 }
             }else{
                 const dmChannel = await user.createDM();
-                dmChannel.send("Votre demande de rôle Intervenant a déjà été refusée et nous ne pouvons plus l'activé.");
+                const row = new ActionRowBuilder().addComponents(
+                    new ButtonBuilder()
+                    .setCustomId(`help_request_${user.id}`)
+                    .setLabel('Demander de l\'aide')
+                    .setStyle(ButtonStyle.Primary)
+                );
+                await user.send({
+                    content: `Votre demande de rôle Intervenant a déjà été refusée et nous ne pouvons plus l'activé. (Contactez un modérateur si vous voullez plus d'informations, cliquez sur le bouton ci-dessous pour alerter les modérateurs.`,
+                    components: [row]
+                }).catch(() => null);
             }
         }
     }
@@ -134,6 +143,24 @@ bot.on("messageCreate", async (message) => {
   }else{
     message.reply("Vous n'avez pas la permission d'utiliser cette commande.");
   }
+});
+
+bot.on("interactionCreate", async (interaction) => {
+    if (!interaction.isButton()) return;
+
+    if (interaction.customId.startsWith('help_request_')) {
+        const studentId = interaction.customId.split('_')[2];
+        const adminChannel = bot.channels.cache.get(process.env.ID_SALON_ADMIN);
+
+        if (adminChannel) {
+            await adminChannel.send(`**Demande d'aide** : L'utilisateur <@${studentId}> (ID: \`${studentId}\`) a cliqué sur le bouton d'aide après son refus.`);
+            
+            await interaction.reply({ 
+                content: "✅ Votre demande d'aide a été envoyée aux modérateurs. Ils reviendront vers vous dès que possible.", 
+                ephemeral: true
+            });
+        }
+    }
 });
 
 bot.login(process.env.DISCORD_TOKEN);
