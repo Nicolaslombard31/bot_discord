@@ -7,7 +7,21 @@ const {
   ButtonBuilder,
   ButtonStyle,
 } = require("discord.js");
-const listeRefuses = new Set();
+const fs = require("fs");
+const path = "./refus.json";
+
+let listeRefuses = new Set();
+if (fs.existsSync(path)) {
+  const data = fs.readFileSync(path);
+  const array = JSON.parse(data);
+  listeRefuses = new Set(array);
+  console.log(`📂 ${listeRefuses.size} utilisateur(s) refusé(s) chargés.`);
+}
+
+function sauvegarderRefus() {
+  const array = Array.from(listeRefuses);
+  fs.writeFileSync(path, JSON.stringify(array, null, 2));
+}
 
 const bot = new Client({
   intents: [
@@ -72,9 +86,10 @@ bot.on("ready", async () => {
   const channel = bot.channels.cache.get(process.env.ID_SALON);
   if (channel) {
     const oldMessages = await channel.messages.fetch({ limit: 10 });
-    if (oldMessages.size > 0) await channel.bulkDelete(oldMessages).catch(() => null);
+    if (oldMessages.size > 0)
+      await channel.bulkDelete(oldMessages).catch(() => null);
     const sentMessage = await channel.send(
-      "Choisissez un rôle en réagissant à ce message !:\n👨‍🏫 : Intervenant, 🎓 : B1, 📖 : B2(SN2), 💻 : B3, 🚀 : M1, 🏆 : M2"
+      "Choisissez un rôle en réagissant à ce message !:\n👨‍🏫 : Intervenant, \n🎓 : B1, \n📖 : B2(SN2), \n💻 : B3, \n🚀 : M1, \n🏆 : M2"
     );
 
     await sentMessage.react("👨‍🏫");
@@ -87,9 +102,10 @@ bot.on("ready", async () => {
   const channelRE = bot.channels.cache.get(process.env.ID_SALON_RE);
   if (channelRE) {
     const oldMessages = await channelRE.messages.fetch({ limit: 10 });
-    if (oldMessages.size > 0) await channelRE.bulkDelete(oldMessages).catch(() => null);
+    if (oldMessages.size > 0)
+      await channelRE.bulkDelete(oldMessages).catch(() => null);
     const sentMessageRE = await channelRE.send(
-      "Bienvenue dans le salon de Recherche d'Entreprise ! veuillers choisir votre promotion en réagissant à ce message :\n📱 : B3 CDA, ⚙️ : B3 SRB, 🧠 : M1 IA, 🛡️ : M1 cyber, 👨‍💻 : M1 Dev, 🏗️ : M1 infra"
+      "Bienvenue dans le salon de Recherche d'Entreprise ! veuillers choisir votre promotion en réagissant à ce message :\n📱 : B3 CDA, \n⚙️ : B3 SRB, \n🧠 : M1 IA, \n🛡️ : M1 cyber, \n👨‍💻 : M1 Dev, \n🏗️ : M1 infra"
     );
     await sentMessageRE.react("📱");
     await sentMessageRE.react("⚙️");
@@ -170,8 +186,11 @@ bot.on("messageReactionAdd", async (reaction, user) => {
     const student = await reaction.message.guild.members
       .fetch(studentId)
       .catch(() => null);
+
     if (student) {
       listeRefuses.add(studentId);
+      sauvegarderRefus();
+
       const dmChannel = await student.createDM();
       dmChannel.send("Votre demande de rôle Intervenant a été refusée.");
     }
@@ -297,7 +316,9 @@ bot.on("messageReactionAdd", async (reaction, user) => {
       .fetch(studentId)
       .catch(() => null);
     if (student) {
-      if (reaction.message.guild.roles.cache.find((r) => r.name === "M1_Cyber")) {
+      if (
+        reaction.message.guild.roles.cache.find((r) => r.name === "M1_Cyber")
+      ) {
         const role = reaction.message.guild.roles.cache.find(
           (r) => r.name === "M1_Cyber"
         );
@@ -325,7 +346,9 @@ bot.on("messageReactionAdd", async (reaction, user) => {
       .fetch(studentId)
       .catch(() => null);
     if (student) {
-      if (reaction.message.guild.roles.cache.find((r) => r.name === "M1_Infra")) {
+      if (
+        reaction.message.guild.roles.cache.find((r) => r.name === "M1_Infra")
+      ) {
         const role = reaction.message.guild.roles.cache.find(
           (r) => r.name === "M1_Infra"
         );
@@ -356,6 +379,12 @@ bot.on("messageReactionRemove", async (reaction, user) => {
     "💻": "B3",
     "🚀": "M1",
     "🏆": "M2",
+    "📱": "B3_CDA",
+    "⚙️": "B3_SRB",
+    "🧠": "M1_IA",
+    "🛡️": "M1_Cyber",
+    "👨‍💻": "M1_Dev",
+    "🏗️": "M1_Infra",
   };
 
   if (promos[reaction.emoji.name]) {
