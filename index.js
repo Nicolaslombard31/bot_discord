@@ -66,6 +66,10 @@ bot.on("ready", async () => {
           {
             name: "💻 Professionnalisme",
             value: "Utilisez les salons appropriés et soignez votre langage.",
+          },
+          {
+            name: "Sanctions",
+            value: "Non-respect des règles peut entraîner des avertissements ou bannissements.",
           }
         )
         .setFooter({
