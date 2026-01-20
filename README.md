@@ -23,3 +23,7 @@ Création d'un bot discord de modération sur un discord communautaire. Gestion 
 
 * npm i --save discord.js
 * npm list discord.js (il faut que ce soit la version 14.25.1)
+
+2. Clonez le projet :
+```bash
+   git clone [https://https://github.com/Nicolaslombard31/bot_discord/tree/dev](https://https://github.com/Nicolaslombard31/bot_discord/tree/dev)
