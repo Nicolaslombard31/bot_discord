@@ -10,6 +10,7 @@ const {
   PermissionFlagsBits,
   MessageFlags,
   Partials,
+  EmbedBuilder,
 } = require("discord.js");
 const fs = require("fs");
 const path = "./refus.json";
@@ -36,6 +37,7 @@ const bot = new Client({
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildInvites,
     GatewayIntentBits.DirectMessages,
+    GatewayIntentBits.GuildScheduledEvents,
     1 << 21,
   ],
   partials: [Partials.Channel, Partials.Message],
@@ -50,13 +52,6 @@ bot.on("ready", async () => {
   if (channelRules) {
     const messages = await channelRules.messages.fetch({ limit: 10 });
     if (messages.size === 0) {
-      const {
-        EmbedBuilder,
-        ActionRowBuilder,
-        ButtonBuilder,
-        ButtonStyle,
-      } = require("discord.js");
-
       const embedRules = new EmbedBuilder()
         .setTitle("⚖️ Règlement de la communauté EPSI")
         .setColor(0x2ecc71)
@@ -67,25 +62,25 @@ bot.on("ready", async () => {
           {
             name: "🤝 Entraide",
             value:
-              "Ici on s'entraide sur le code. Pas de jugement sur les erreurs des autres.",
+              "• Ici on s'entraide sur le code. Pas de jugement sur les erreurs des autres.",
           },
           {
             name: "💬 Respect",
             value:
-              "Politesse avec les camarades et les intervenants. Utilisez vos vrais noms.",
+              "• Politesse avec les camarades et les intervenants. Utilisez vos vrais noms.",
           },
           {
             name: "💻 Professionnalisme",
-            value: "Utilisez les salons appropriés et soignez votre langage.",
+            value: "• Utilisez les salons appropriés et soignez votre langage.",
           },
           {
             name: "📚 EPSI",
-            value: "Respectez les règles de l'EPSI.",
+            value: "• Respectez les règles de l'EPSI.",
           },
           {
             name: "⚠️ Sanctions",
             value:
-              "Non-respect des règles peut entraîner des avertissements ou bannissements de la part des modérateurs.",
+              "• Non-respect des règles peut entraîner des avertissements ou bannissements de la part des modérateurs.",
           }
         )
         .setFooter({
@@ -596,18 +591,26 @@ bot.on("guildMemberAdd", async (member) => {
 
 bot.on("autoModerationActionExecution", async (execution) => {
   try {
-    const member = await execution.guild.members.fetch(execution.userId).catch(() => null);
-    
+    const member = await execution.guild.members
+      .fetch(execution.userId)
+      .catch(() => null);
+
     if (!member) {
       console.log("❌ Impossible de récupérer le membre sur le serveur.");
       return;
     }
 
-    const roleRestriction = execution.guild.roles.cache.find(r => r.name === "Restriction");
-    const roleMember = execution.guild.roles.cache.find(r => r.name === "Membre");
+    const roleRestriction = execution.guild.roles.cache.find(
+      (r) => r.name === "Restriction"
+    );
+    const roleMember = execution.guild.roles.cache.find(
+      (r) => r.name === "Membre"
+    );
 
     if (!roleRestriction) {
-      console.log("⚠️ Le rôle 'restriction' n'existe pas. Vérifie l'orthographe (minuscules/majuscules).");
+      console.log(
+        "⚠️ Le rôle 'restriction' n'existe pas. Vérifie l'orthographe (minuscules/majuscules)."
+      );
       return;
     }
 
@@ -619,11 +622,62 @@ bot.on("autoModerationActionExecution", async (execution) => {
       console.log(`✅ Rôle ${roleMember.name} retiré à ${member.user.tag}`);
     }
 
-    await member.send(`⚠️ Ton message a été bloqué sur **${execution.guild.name}**. Tu as été restreint.`)
-    .catch(() => console.log("DMs fermés."));
+    await member
+      .send(
+        `⚠️ Ton message a été bloqué sur **${execution.guild.name}**. Tu as été restreint.`
+      )
+      .catch(() => console.log("DMs fermés."));
   } catch (error) {
     console.error("❌ Erreur lors de l'exécution de l'AutoMod :");
     console.error(error);
+  }
+});
+
+bot.on("guildScheduledEventCreate", async (event) => {
+  console.log(`Nouvel événement détecté : ${event.name}`);
+
+  const forumChannel = event.guild.channels.cache.get(
+    process.env.ID_SALON_ANNONCE
+  );
+
+  if (forumChannel && forumChannel.type === 15) {
+    try {
+      const imageURL = event.coverImageURL({ size: 1024, extension: "png" });
+
+      const { EmbedBuilder } = require("discord.js");
+      const eventEmbed = new EmbedBuilder()
+        .setTitle(`Discussion : ${event.name}`)
+        .setDescription(event.description || "Aucune description fournie.")
+        .setColor(0x3498db)
+        .addFields(
+          {
+            name: "Lieu",
+            value: event.entityMetadata?.location || "Salon vocal / Interne",
+            inline: true,
+          },
+          {
+            name: "Début",
+            value: `<t:${Math.floor(event.scheduledStartTimestamp / 1000)}:F>`,
+            inline: true,
+          }
+        );
+
+      if (imageURL) {
+        eventEmbed.setImage(imageURL);
+      }
+
+      await forumChannel.threads.create({
+        name: `${event.name}`,
+        message: {
+          embeds: [eventEmbed],
+          content: `Un nouvel événement a été programmé par <@${event.creatorId}> !`,
+        },
+      });
+
+      console.log(`Forum avec image créé pour : ${event.name}`);
+    } catch (error) {
+      console.error("Erreur lors de la création du post forum :", error);
+    }
   }
 });
 

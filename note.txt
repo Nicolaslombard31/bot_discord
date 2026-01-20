@@ -1,7 +1,7 @@
 - sas pour les nouveaux
 - catégory RE:
     - B3 CDA
-    - B3 SRB
+    - B3 ASRBD
     - M1 IA
     - M1 cyber
     - M1 Dev
