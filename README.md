@@ -26,4 +26,4 @@ Création d'un bot discord de modération sur un discord communautaire. Gestion 
 
 2. Clonez le projet :
 ```bash
-   git clone [https://https://github.com/Nicolaslombard31/bot_discord/tree/dev](https://https://github.com/Nicolaslombard31/bot_discord/tree/dev)
+   git clone [https://github.com/Nicolaslombard31/bot_discord/tree/dev](https://github.com/Nicolaslombard31/bot_discord/tree/dev)
