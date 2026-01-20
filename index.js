@@ -507,6 +507,7 @@ bot.on("messageCreate", async (message) => {
             name: channelName,
             type: 0,
             parent: categoryId,
+            rateLimitPerUser: 60,
             permissionOverwrites: [
               {
                 id: message.guild.id,
