@@ -21,5 +21,5 @@ Création d'un bot discord de modération sur un discord communautaire. Gestion 
 
 1. Installez les dépendances :
 
-npm i --save discord.js
-npm list discord.js (il faut que ce soit la version 14.25.1)
+* npm i --save discord.js
+* npm list discord.js (il faut que ce soit la version 14.25.1)
