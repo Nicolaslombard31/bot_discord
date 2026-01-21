@@ -48,3 +48,9 @@ INVITE_CODE_SPECIAL="Mettez votre id du lien d'invitation pour les RE ici"
 ID_SALON_QUESTIONS='Mettez votre id du salon des questions ici'
 ID_SALON_ANNONCE='Mettez votre id du salon des annonces ici'
 ```
+
+4. Lancez le bot :
+
+```bash
+node .\index.js
+```
