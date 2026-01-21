@@ -54,3 +54,8 @@ ID_SALON_ANNONCE='Mettez votre id du salon des annonces ici'
 ```bash
 node .\index.js
 ```
+
+## Dossier Technique
+
+* [Implémentation](./dossier_technique/implementation.md)
+* [Lancement du bot](./dossier_technique/ready.md)
