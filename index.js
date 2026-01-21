@@ -48,7 +48,7 @@ const invites = new Map();
 bot.on("ready", async () => {
   console.log(`✅ Bot EPSI Bordeaux en ligne : ${bot.user.tag}`);
 
-  const channelRules = bot.channels.cache.get(process.env.ID_SALON_RULES);
+  const channelRules = bot.channels.cache.get(process.env.ID_SALON_REGLE);
   if (channelRules) {
     const messages = await channelRules.messages.fetch({ limit: 10 });
     if (messages.size === 0) {
@@ -98,7 +98,7 @@ bot.on("ready", async () => {
     }
   }
 
-  const channel = bot.channels.cache.get(process.env.ID_SALON);
+  const channel = bot.channels.cache.get(process.env.ID_SALON_RULES);
   if (channel) {
     const oldMessages = await channel.messages.fetch({ limit: 10 });
     if (oldMessages.size > 0)
