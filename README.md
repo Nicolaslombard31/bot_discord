@@ -54,3 +54,10 @@ ID_SALON_ANNONCE='Mettez votre id du salon des annonces ici'
 ```bash
 node .\index.js
 ```
+
+
+## Infrastructure
+
+1. Implementation :
+![Aperçu des implémentation](./images/implementation.png)
+![Aperçu des implémentation](./images/implementation_01.png)
