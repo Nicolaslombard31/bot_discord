@@ -20,3 +20,5 @@ Ensuite nous avons le morceau de code qui permet d'afficher le choix des promos 
 Par la suite nous pouvons voir que ce code fait la même chose que celui d'avant mais pour la RE (Recherche d'Entreprise).
 
 ![ready_04](../images/ready_04.png)
+
+[page précédente](../dossier_technique/implementation.md)[page suivante](../dossier_technique/reactions.md)
