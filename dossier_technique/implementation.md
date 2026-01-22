@@ -4,3 +4,5 @@ Le code ci-dessous reprèsente toutes les implémentations pour permettre au cod
 
 ![Aperçu des implémentation](../images/implementation.png)
 ![Aperçu des implémentation](../images/implementation_01.png)
+
+* [page suivante](../dossier_technique/ready.md)
