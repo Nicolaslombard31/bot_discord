@@ -21,4 +21,4 @@ Par la suite nous pouvons voir que ce code fait la même chose que celui d'avant
 
 ![ready_04](../images/ready_04.png)
 
-[page précédente](../dossier_technique/implementation.md)   [page suivante](../dossier_technique/reactions.md)
+[page précédente](../dossier_technique/implementation.md)          [page suivante](../dossier_technique/reactions.md)
