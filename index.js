@@ -120,7 +120,8 @@ bot.on("ready", async () => {
     if (oldMessages.size > 0)
       await channelRE.bulkDelete(oldMessages).catch(() => null);
     const sentMessageRE = await channelRE.send(
-      "Bienvenue dans le salon de Recherche d'Entreprise ! veuillers choisir votre promotion en réagissant à ce message :\n📱 : B3 CDA, \n⚙️ : B3 ASRBD, \n🧠 : M1 IA, \n🛡️ : M1 cyber, \n👨‍💻 : M1 Dev, \n🏗️ : M1 infra"
+      "Bienvenue dans le salon de Recherche d'Entreprise ! veuillers choisir votre promotion en réagissant à ce message :\n
+      📱 : B3 CDA, \n⚙️ : B3 ASRBD, \n🧠 : M1 IA, \n🛡️ : M1 cyber, \n👨‍💻 : M1 Dev, \n🏗️ : M1 infra"
     );
     await sentMessageRE.react("📱");
     await sentMessageRE.react("⚙️");
