@@ -459,7 +459,7 @@ bot.on("messageCreate", async (message) => {
   if (message.content === "!create") {
     if (hasRole) {
       message.reply(
-        "Commande de création lancée ! Envoie maintenant le **nom du salon** et le **nom de la catégorie** (séparés par un espace)."
+        "Commande de création lancée ! Envoie maintenant le **nom du salon**, le **nom de la catégorie** et si c'est pour les BTS mettait BTS(séparés par un espace)."
       );
 
       const filter = (m) => m.author.id === message.author.id;
@@ -497,35 +497,72 @@ bot.on("messageCreate", async (message) => {
               "❌ Erreur : Je n'ai pas trouvé le rôle de la promo."
             );
           }
+          const rolebts = message.guild.roles.cache.find(
+            (r) => r.name.startsWith("BTS")
+          );
+          if (!rolebts) {
+            return message.reply(
+              "❌ Erreur : Je n'ai pas trouvé le rôle BTS."
+            );
+          }
 
-          const newChannel = await message.guild.channels.create({
-            name: channelName,
-            type: 0,
-            parent: categoryId,
-            rateLimitPerUser: 60,
-            permissionOverwrites: [
-              {
-                id: message.guild.id,
-                deny: [PermissionFlagsBits.ViewChannel],
-              },
-              {
-                id: roleInter.id,
-                allow: [
-                  PermissionFlagsBits.ViewChannel,
-                  PermissionFlagsBits.SendMessages,
-                  PermissionFlagsBits.ManageMessages,
-                ],
-              },
-              {
-                id: rolepromo.id,
-                allow: [
-                  PermissionFlagsBits.ViewChannel,
-                  PermissionFlagsBits.SendMessages,
-                ],
-              },
-            ],
-          });
-
+          if (args[2] && args[2].toLowerCase() === "bts") {
+            const newChannel = await message.guild.channels.create({
+              name: channelName,
+              type: 0,
+              parent: categoryId,
+              rateLimitPerUser: 60,
+              permissionOverwrites: [
+                {
+                  id: message.guild.id,
+                  deny: [PermissionFlagsBits.ViewChannel],
+                },
+                {
+                  id: roleInter.id,
+                  allow: [
+                    PermissionFlagsBits.ViewChannel,
+                    PermissionFlagsBits.SendMessages,
+                    PermissionFlagsBits.ManageMessages,
+                  ],
+                },
+                {
+                  id: rolebts.id,
+                  allow: [
+                    PermissionFlagsBits.ViewChannel,
+                    PermissionFlagsBits.SendMessages,
+                  ],
+                },
+              ],
+            });
+          } else{
+            const newChannel = await message.guild.channels.create({
+              name: channelName,
+              type: 0,
+              parent: categoryId,
+              rateLimitPerUser: 60,
+              permissionOverwrites: [
+                {
+                  id: message.guild.id,
+                  deny: [PermissionFlagsBits.ViewChannel],
+                },
+                {
+                  id: roleInter.id,
+                  allow: [
+                    PermissionFlagsBits.ViewChannel,
+                    PermissionFlagsBits.SendMessages,
+                    PermissionFlagsBits.ManageMessages,
+                  ],
+                },
+                {
+                  id: rolepromo.id,
+                  allow: [
+                    PermissionFlagsBits.ViewChannel,
+                    PermissionFlagsBits.SendMessages,
+                  ],
+                },
+              ],
+            });
+          }
           message.reply(`Salon **${channelName}** créé avec succès !`);
         })
         .catch(() => {
@@ -606,6 +643,9 @@ bot.on("autoModerationActionExecution", async (execution) => {
     const roleMember = execution.guild.roles.cache.find(
       (r) => r.name === "Membre"
     );
+    const roleMemberRE = execution.guild.roles.cache.find(
+      (r) => r.name === "Membre_RE"
+    );
 
     if (!roleRestriction) {
       console.log(
@@ -620,6 +660,16 @@ bot.on("autoModerationActionExecution", async (execution) => {
     if (roleMember && member.roles.cache.has(roleMember.id)) {
       await member.roles.remove(roleMember);
       console.log(`✅ Rôle ${roleMember.name} retiré à ${member.user.tag}`);
+    }
+    if (roleMemberRE && member.roles.cache.has(roleMemberRE.id)) {
+      await member.roles.remove(roleMemberRE);
+      console.log(`✅ Rôle ${roleMemberRE.name} retiré à ${member.user.tag}`);
+      const admin = bot.channels.cache.get(process.env.ID_SALON_ADMIN);
+      if (admin) {
+        const sentMessage = await admin.send(
+          `${member.user.tag} été un membre en RE et a été restreint par l'AutoMod.`
+        );
+      }
     }
 
     await member
