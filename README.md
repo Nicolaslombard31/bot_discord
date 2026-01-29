@@ -59,3 +59,4 @@ node .\index.js
 
 * [Implémentation](./dossier_technique/implementation.md)
 * [Lancement du bot](./dossier_technique/ready.md)
+* [Reaction](./dossier_technique/reactions.md)
