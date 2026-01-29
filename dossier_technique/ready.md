@@ -1,5 +1,7 @@
 # Au lancement du Bot
 
+[page précédente](../dossier_technique/implementation.md)          [page suivante](../dossier_technique/reactions.md)
+
 1. Affichage des règles :
 
 Le code ci-dessous permet d'afficher les règles mis en place pour le site de l'Epsi.

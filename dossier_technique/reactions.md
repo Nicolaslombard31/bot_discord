@@ -1,5 +1,7 @@
 # Reactions au message
 
+[page précédente](../dossier_technique/ready.md)   [page suivante](../dossier_technique/create.md)
+
 1. Intervenants :
 
 Le code que nous voyons ci-dessous permet d'en un prmier temps de vérifier si le user n'a pas déjà le rôle ensuite de vérifiéer si le user n'est pas dans la liste des refusé.
