@@ -13,5 +13,7 @@ Nous allons voir grâçe a ce bout de code comment un user peut créer un forum 
 La suite du code nous permet de lancer la création d'un salon vu uniquement par une promo et l'intervenant qui la crée grâçe a la commande **"!create"**.
 
 ![create_02](../images/create_02.png)
+![create_03](../images/create_03.png)
+![create_04](../images/create_04.png)
 
 [page précédente](../dossier_technique/reactions.md)   [🏠](../README.md)   [page suivante](../dossier_technique/interaction.md)
