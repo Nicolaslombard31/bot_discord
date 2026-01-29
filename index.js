@@ -430,11 +430,11 @@ bot.on("messageCreate", async (message) => {
   if (!message.guild) {
     console.log(`💬 DM reçu de ${message.author.tag} : ${message.content}`);
 
-    const adminChannel = bot.channels.cache.get(process.env.ID_SALON_QUESTIONS);
+    const questionChannel = bot.channels.cache.get(process.env.ID_SALON_QUESTIONS);
 
-    if (adminChannel) {
-      if (adminChannel.type === 15) {
-        await adminChannel.threads
+    if (questionChannel) {
+      if (questionChannel.type === 15) {
+        await questionChannel.threads
           .create({
             name: `Question de ${message.author.username}`,
             message: {
@@ -442,8 +442,8 @@ bot.on("messageCreate", async (message) => {
             },
           })
           .catch((err) => console.error("Erreur Forum:", err));
-      } else if (adminChannel.isTextBased()) {
-        await adminChannel
+      } else if (questionChannel.isTextBased()) {
+        await questionChannel
           .send(`💬 **DM reçu de ${message.author.tag}** : ${message.content}`)
           .catch((err) => console.error("Erreur envoi Admin:", err));
       }
