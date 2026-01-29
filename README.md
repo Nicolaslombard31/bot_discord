@@ -60,3 +60,5 @@ node .\index.js
 * [Implémentation](./dossier_technique/implementation.md)
 * [Lancement du bot](./dossier_technique/ready.md)
 * [Reaction](./dossier_technique/reactions.md)
+* [Creation de salon](./dossier_technique/create.md)
+* [interaction user](./dossier_technique/interaction.md)
