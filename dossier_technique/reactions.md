@@ -18,6 +18,14 @@ Dans le code on peut voir l'acceptation des modérateurs pour le rôle Intervena
 
 3. Refussée :
 
-Ensuite dans ce bout de code on vois le refus des modérateurs pour le rôle Interveant.
+Ensuite dans ce bout de code on vois le refus des modérateurs pour le rôle Interveant, et nous le sauvegardons dans une liste qui reste même si le bot se réinitialise.
 
 ![reaction_04](../images/reaction_04.png)
+
+4. Promos :
+
+Dans le code qui suis nous avons mis en place le faite que si un user met un certains emoji il sera mis dans une promos spécifique.
+
+![reaction_05](../images/reaction_05.png)
+![reaction_06](../images/reaction_06.png)
+![reaction_07](../images/reaction_07.png)
