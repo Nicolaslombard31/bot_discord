@@ -1,6 +1,6 @@
 # Reactions au message
 
-[page précédente](../dossier_technique/ready.md)   [page suivante](../dossier_technique/create.md)
+[page précédente](../dossier_technique/ready.md)   [🏠](../README.md)   [page suivante](../dossier_technique/create.md)
 
 1. Intervenants :
 
