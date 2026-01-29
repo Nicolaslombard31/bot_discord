@@ -12,6 +12,12 @@ Par la suite nous envoyons un message a l'user si il est dans la liste refusé p
 
 2. Acceptée :
 
-Dans le code que nous allons voir c'est l'acceptation des modérateurs pour le rôle Intervenant.
+Dans le code on peut voir l'acceptation des modérateurs pour le rôle Intervenant.
 
 ![reaction_03](../images/reaction_03.png)
+
+3. Refussée :
+
+Ensuite dans ce bout de code on vois le refus des modérateurs pour le rôle Interveant.
+
+![reaction_04](../images/reaction_04.png)
