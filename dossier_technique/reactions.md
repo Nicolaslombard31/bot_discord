@@ -39,5 +39,10 @@ Et on a fait la même chose pour les RE (Recherche d'Entreprise).
 ![reaction_10](../images/reaction_10.png)
 ![reaction_11](../images/reaction_11.png)
 
+On a ensuite le retirage des rôles promos quand les user retire leurs emojis.
+
+![reaction_12](../images/reaction_12.png)
+![reaction_13](../images/reaction_13.png)
+
 
 [page précédente](../dossier_technique/ready.md)   [🏠](../README.md)   [page suivante](../dossier_technique/create.md)
