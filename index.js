@@ -140,9 +140,6 @@ bot.on("ready", async () => {
 
 bot.on("messageReactionAdd", async (reaction, user) => {
   if (user.bot) return;
-  const intervenants = reaction.message.guild.roles.cache.filter((r) =>
-    r.name.startsWith("i-")
-  ).size;
   if (reaction.partial) {
     try {
       await reaction.fetch();
