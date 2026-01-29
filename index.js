@@ -459,7 +459,7 @@ bot.on("messageCreate", async (message) => {
   if (message.content === "!create") {
     if (hasRole) {
       message.reply(
-        "Commande de création lancée ! Envoie maintenant le **nom du salon**, le **nom de la catégorie** et si c'est pour les BTS mettait BTS(séparés par un espace)."
+        "Commande de création lancée ! Envoie maintenant le **nom du salon**, le **nom de la catégorie** et si c'est pour les BTS mettait BTS(séparés par un espace, example 'Math B1 BTS')."
       );
 
       const filter = (m) => m.author.id === message.author.id;
@@ -612,7 +612,9 @@ bot.on("messageCreate", async (message) => {
   }
   const moderateur = message.member.roles.cache.has(process.env.ID_ROLE_ADMIN);
   if (message.content.startsWith("!changementpromo")) {
+    console.log(`🔄 Commande de promotion lancée par ${message.author.tag}`);
     if (moderateur) {
+      console.log(`✅ ${message.author.tag} est autorisé à lancer les promotions.`);
       let filePromos = ["M2","M1", "B3", "B2", "B1"];
       const cible = {
         "M1": "M2",
@@ -620,9 +622,39 @@ bot.on("messageCreate", async (message) => {
         "B2": "B3",
         "B1": "B2"
       };
-      while (message.mentions.members.size > 0) {
+      const tousLesMembres = await message.guild.members.fetch();
+      const elevesUniquement = tousLesMembres.filter(m => !m.user.bot);
+      const countB1 = elevesUniquement.filter(m => m.roles.cache.some(r => r.name === "B1")).size;
+      const countB2 = elevesUniquement.filter(m => m.roles.cache.some(r => r.name === "B2")).size;
+      const countB3 = elevesUniquement.filter(m => m.roles.cache.some(r => r.name === "B3")).size;
+      const countM1 = elevesUniquement.filter(m => m.roles.cache.some(r => r.name === "M1")).size;
+      const countM2 = elevesUniquement.filter(m => m.roles.cache.some(r => r.name === "M2")).size;
+      while (filePromos.length > 0) {
+        console.log(`le while commence`);
+        const nomAnciennePromo = filePromos.shift();
+        const nomNouvellePromo = cible[nomAnciennePromo];
 
-      }
+        const roleAncien = message.guild.roles.cache.find(r => r.name === nomAnciennePromo);
+        const roleNouveau = message.guild.roles.cache.find(r => r.name === nomNouvellePromo);
+
+        if (roleAncien && roleNouveau) {
+          console.log(`Traitement de la promotion : ${nomAnciennePromo} -> ${nomNouvellePromo}`);
+          let listeAEvoluer = Array.from(elevesUniquement.filter(m => m.roles.cache.has(roleAncien.id)).values());
+
+          console.log(`Promotion des ${nomAnciennePromo} (${listeAEvoluer.length} élèves)`);
+
+          while (listeAEvoluer.length > 0) {
+            const membre = listeAEvoluer.shift();
+            try {
+              await membre.roles.add(roleNouveau);
+              await membre.roles.remove(roleAncien);
+            } catch (err) {
+              console.error(`Erreur sur ${membre.user.tag} : ${err.message}`);
+            }
+          }
+        }
+      } 
+      message.channel.send("✅ **Opération terminée : toutes les promotions ont migré !**");
     }
   }
 });
