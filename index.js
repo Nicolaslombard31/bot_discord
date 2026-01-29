@@ -174,7 +174,8 @@ bot.on("messageReactionAdd", async (reaction, user) => {
         await user
           .send({
             content: `Votre demande de rôle Intervenant a déjà été refusée et nous ne pouvons plus l'activé. 
-            (Contactez un modérateur si vous voullez plus d'informations, cliquez sur le bouton ci-dessous pour alerter les modérateurs.`,
+            (Contactez un modérateur si vous voullez plus d'informations, cliquez sur le bouton ci-dessous 
+            pour alerter les modérateurs.`,
             components: [row],
           })
           .catch(() => null);
