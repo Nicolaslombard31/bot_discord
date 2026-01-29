@@ -9,3 +9,9 @@ Le code que nous voyons ci-dessous permet d'en un prmier temps de vérifier si l
 Par la suite nous envoyons un message a l'user si il est dans la liste refusé pour lui dire qu'il a déjà été refusé et qu'il doit contacter les modérateurs pour plus d'informations.
 
 ![reaction_02](../images/reaction_02.png)
+
+2. Acceptée :
+
+Dans le code que nous allons voir c'est l'acceptation des modérateurs pour le rôle Intervenant.
+
+![reaction_03](../images/reaction_03.png)
