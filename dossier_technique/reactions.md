@@ -29,3 +29,9 @@ Dans le code qui suis nous avons mis en place le faite que si un user met un cer
 ![reaction_05](../images/reaction_05.png)
 ![reaction_06](../images/reaction_06.png)
 ![reaction_07](../images/reaction_07.png)
+
+Et on a fait la même chose pour les RE (Recherche d'Entreprise).
+
+![reaction_08](../images/reaction_08.png)
+![reaction_09](../images/reaction_09.png)
+![reaction_10](../images/reaction_10.png)
