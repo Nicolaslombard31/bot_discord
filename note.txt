@@ -6,3 +6,8 @@
     - M1 cyber
     - M1 Dev
     - M1 infra
+
+
+2 catégorie en plus
+ou 2 rôles distinc
+ou ...

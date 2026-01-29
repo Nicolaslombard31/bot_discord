@@ -486,7 +486,7 @@ bot.on("messageCreate", async (message) => {
           );
           if (!roleInter) {
             return message.reply(
-              "❌ Erreur : Je n'ai pas trouvé votre rôle d'intervenant (commençant par 'i-')."
+              "Erreur : Je n'ai pas trouvé votre rôle d'intervenant (commençant par 'i-')."
             );
           }
           const rolepromo = message.guild.roles.cache.find(
@@ -494,19 +494,27 @@ bot.on("messageCreate", async (message) => {
           );
           if (!rolepromo) {
             return message.reply(
-              "❌ Erreur : Je n'ai pas trouvé le rôle de la promo."
+              "Erreur : Je n'ai pas trouvé le rôle de la promo."
             );
           }
-          const rolebts = message.guild.roles.cache.find(
-            (r) => r.name.startsWith("BTS")
+          const rolebtsb1 = message.guild.roles.cache.find(
+            (r) => r.name.startsWith("BTS_B1")
           );
-          if (!rolebts) {
+          if (!rolebtsb1) {
             return message.reply(
-              "❌ Erreur : Je n'ai pas trouvé le rôle BTS."
+              "Erreur : Je n'ai pas trouvé le rôle BTS."
+            );
+          }
+          const rolebtsb2 = message.guild.roles.cache.find(
+            (r) => r.name.startsWith("BTS_B2")
+          );
+          if (!rolebtsb2) {
+            return message.reply(
+              "Erreur : Je n'ai pas trouvé le rôle BTS."
             );
           }
 
-          if (args[2] && args[2].toLowerCase() === "bts") {
+          if (args[2] && args[2].toLowerCase() === "bts_b1") {
             const newChannel = await message.guild.channels.create({
               name: channelName,
               type: 0,
@@ -526,7 +534,7 @@ bot.on("messageCreate", async (message) => {
                   ],
                 },
                 {
-                  id: rolebts.id,
+                  id: rolebtsb1.id,
                   allow: [
                     PermissionFlagsBits.ViewChannel,
                     PermissionFlagsBits.SendMessages,
@@ -534,7 +542,35 @@ bot.on("messageCreate", async (message) => {
                 },
               ],
             });
-          } else{
+          }else if (args[2] && args[2].toLowerCase() === "bts_b2") {
+            const newChannel = await message.guild.channels.create({
+              name: channelName,
+              type: 0,
+              parent: categoryId,
+              rateLimitPerUser: 60,
+              permissionOverwrites: [
+                {
+                  id: message.guild.id,
+                  deny: [PermissionFlagsBits.ViewChannel],
+                },
+                {
+                  id: roleInter.id,
+                  allow: [
+                    PermissionFlagsBits.ViewChannel,
+                    PermissionFlagsBits.SendMessages,
+                    PermissionFlagsBits.ManageMessages,
+                  ],
+                },
+                {
+                  id: rolebtsb2.id,
+                  allow: [
+                    PermissionFlagsBits.ViewChannel,
+                    PermissionFlagsBits.SendMessages,
+                  ],
+                },
+              ],
+            });
+          }else{
             const newChannel = await message.guild.channels.create({
               name: channelName,
               type: 0,
@@ -572,6 +608,21 @@ bot.on("messageCreate", async (message) => {
         });
     } else {
       message.reply("Vous n'avez pas la permission d'utiliser cette commande.");
+    }
+  }
+  const moderateur = message.member.roles.cache.has(process.env.ID_ROLE_ADMIN);
+  if (message.content.startsWith("!changementpromo")) {
+    if (moderateur) {
+      let filePromos = ["M2","M1", "B3", "B2", "B1"];
+      const cible = {
+        "M1": "M2",
+        "B3": "M1",
+        "B2": "B3",
+        "B1": "B2"
+      };
+      while (message.mentions.members.size > 0) {
+
+      }
     }
   }
 });
