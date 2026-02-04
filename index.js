@@ -429,7 +429,7 @@ bot.on("messageCreate", async (message) => {
   if (message.author.bot) return;
 
   if (!message.guild) {
-    console.log(`💬 DM reçu de ${message.author.tag} : ${message.content}`);
+    console.log(`💬 MP reçu de ${message.author.tag} : ${message.content}`);
 
     const questionChannel = bot.channels.cache.get(process.env.ID_SALON_QUESTIONS);
 
