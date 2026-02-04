@@ -61,4 +61,5 @@ node .\index.js
 * [Lancement du bot](./dossier_technique/ready.md)
 * [Reaction](./dossier_technique/reactions.md)
 * [Creation de salon](./dossier_technique/create.md)
-* [interaction boutton](./dossier_technique/interaction.md)
+* [Interaction boutton](./dossier_technique/interaction.md)
+* [Membre ajouté](./dossier_technique/memberadd.md)
