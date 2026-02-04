@@ -1,6 +1,6 @@
 # Reactions au message
 
-[page précédente](../dossier_technique/ready.md)   [🏠](../README.md)   [page suivante](../dossier_technique/create.md)
+[page précédente](../dossier_technique/ready.md)   [🏠](../)   [page suivante](../dossier_technique/create.md)
 
 ## 1. Intervenants :
 
@@ -45,4 +45,4 @@ On a ensuite le retirage des rôles promos quand les user retire leurs emojis.
 ![reaction_13](../images/reaction_13.png)
 
 
-[page précédente](../dossier_technique/ready.md)   [🏠](../README.md)   [page suivante](../dossier_technique/create.md)
+[page précédente](../dossier_technique/ready.md)   [🏠](../)   [page suivante](../dossier_technique/create.md)

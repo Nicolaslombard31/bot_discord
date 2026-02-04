@@ -1,6 +1,6 @@
 # Création
 
-[page précédente](../dossier_technique/reactions.md)   [🏠](../README.md)   [page suivante](../dossier_technique/interaction.md)
+[page précédente](../dossier_technique/reactions.md)   [🏠](../)   [page suivante](../dossier_technique/interaction.md)
 
 ## 1. Création de forum :
 
@@ -27,4 +27,4 @@ Dans le code qui vas suivre nous avons fait une imbrication de condition pour v�
 ![create_09](../images/create_09.png)
 ![create_10](../images/create_10.png)
 
-[page précédente](../dossier_technique/reactions.md)   [🏠](../README.md)   [page suivante](../dossier_technique/interaction.md)
+[page précédente](../dossier_technique/reactions.md)   [🏠](../)   [page suivante](../dossier_technique/interaction.md)
