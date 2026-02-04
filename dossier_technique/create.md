@@ -16,6 +16,7 @@ La suite du code nous permet de lancer la création d'un salon vu uniquement par
 ![create_03](../images/create_03.png)
 ![create_04](../images/create_04.png)
 ![create_05](../images/create_05.png)
+![create_06](../images/create_06.png)
 
 
 [page précédente](../dossier_technique/reactions.md)   [🏠](../README.md)   [page suivante](../dossier_technique/interaction.md)

@@ -1,12 +1,13 @@
 require("dotenv").config();
 
+const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 const {
   Client,
   GatewayIntentBits,
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  PermissionOverwrites,
   PermissionFlagsBits,
   MessageFlags,
   Partials,
@@ -618,6 +619,7 @@ bot.on("messageCreate", async (message) => {
       console.log(`✅ ${message.author.tag} est autorisé à lancer les promotions.`);
       let filePromos = ["M2","M1", "B3", "B2", "B1"];
       const cible = {
+        "M2": "Alumni",
         "M1": "M2",
         "B3": "M1",
         "B2": "B3",
@@ -649,6 +651,7 @@ bot.on("messageCreate", async (message) => {
             try {
               await membre.roles.add(roleNouveau);
               await membre.roles.remove(roleAncien);
+              await wait(100);
             } catch (err) {
               console.error(`Erreur sur ${membre.user.tag} : ${err.message}`);
             }
@@ -813,6 +816,18 @@ bot.on("guildScheduledEventCreate", async (event) => {
       console.error("Erreur lors de la création du post forum :", error);
     }
   }
+});
+
+bot.on('error', error => {
+    if (error.name === 'GatewayRateLimitError') {
+        console.warn(`⏳ [Rate Limit] Discord demande d'attendre ${error.data.retry_after}s. Le bot reste en ligne mais l'action est suspendue.`);
+    } else {
+        console.error('❌ [Erreur Client] :', error);
+    }
+});
+
+process.on('unhandledRejection', error => {
+    console.error('📌 [Rejet non géré] :', error);
 });
 
 bot.login(process.env.DISCORD_TOKEN);
