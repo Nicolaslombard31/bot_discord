@@ -63,3 +63,4 @@ node .\index.js
 * [Creation de salon](./dossier_technique/create.md)
 * [Interaction boutton](./dossier_technique/interaction.md)
 * [Membre ajouté](./dossier_technique/memberadd.md)
+* [Rôle Restriction](./dossier_technique/restriction.md)
