@@ -1,6 +1,6 @@
 # Restriction
 
-[page précédente](../dossier_technique/interaction.md)   [🏠](../)   [page suivante](../)
+[page précédente](../dossier_technique/memberadd.md)   [🏠](../)   [page suivante](../)
 
 Dans cette partie nous allons voir comment fonctionne le rôle de restriction.
 
@@ -9,4 +9,4 @@ Tout d'abord on a un bot qui s'appelle "AutoMod" qui est dans tous les seurveur 
 ![restriction_01](../images/restriction_01.png)
 ![restriction_02](../images/restriction_02.png)
 
-[page précédente](../dossier_technique/interaction.md)   [🏠](../)   [page suivante](../)
+[page précédente](../dossier_technique/memberadd.md)   [🏠](../)   [page suivante](../)
