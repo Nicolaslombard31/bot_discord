@@ -636,7 +636,8 @@ bot.on("messageCreate", async (message) => {
       const countM2 = elevesUniquement.filter(m => m.roles.cache.some(r => r.name === "M2")).size;
       const countBTSB1 = elevesUniquement.filter(m => m.roles.cache.some(r => r.name === "BTS_B1")).size;
       const countBTSB2 = elevesUniquement.filter(m => m.roles.cache.some(r => r.name === "BTS_B2")).size;
-      console.log(`📊 Effectifs avant promotion : B1=${countB1}, B2=${countB2}, B3=${countB3}, M1=${countM1}, M2=${countM2}, BTS_B1=${countBTSB1}, BTS_B2=${countBTSB2}`);
+      console.log(`📊 Effectifs avant promotion : B1=${countB1}, B2=${countB2}, B3=${countB3}, M1=${countM1}, M2=${countM2}, 
+        BTS_B1=${countBTSB1}, BTS_B2=${countBTSB2}`);
       while (filePromos.length > 0) {
         console.log(`le while commence`);
         const nomAnciennePromo = filePromos.shift();
