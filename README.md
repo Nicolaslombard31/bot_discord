@@ -64,3 +64,5 @@ node .\index.js
 * [Interaction boutton](./dossier_technique/interaction.md)
 * [Membre ajouté](./dossier_technique/memberadd.md)
 * [Rôle Restriction](./dossier_technique/restriction.md)
+* [Création d'un post](./dossier_technique/evenement.md)
+* [Erreur du bot](./dossier_technique/error.md)
