@@ -820,7 +820,8 @@ bot.on("guildScheduledEventCreate", async (event) => {
 
 bot.on('error', error => {
     if (error.name === 'GatewayRateLimitError') {
-        console.warn(`⏳ [Rate Limit] Discord demande d'attendre ${error.data.retry_after}s. Le bot reste en ligne mais l'action est suspendue.`);
+        console.warn(`⏳ [Rate Limit] Discord demande d'attendre ${error.data.retry_after}s. Le bot reste en ligne mais
+           l'action est suspendue.`);
     } else {
         console.error('❌ [Erreur Client] :', error);
     }
