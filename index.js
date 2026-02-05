@@ -24,6 +24,19 @@ if (fs.existsSync(path)) {
   console.log(`📂 ${listeRefuses.size} utilisateur(s) refusé(s) chargés.`);
 }
 
+let listeAcceptes = new Set();
+if (fs.existsSync(path)) {
+  const data = fs.readFileSync(path);
+  const array = JSON.parse(data);
+  listeAcceptes = new Set(array);
+  console.log(`📂 ${listeAcceptes.size} utilisateur(s) refusé(s) chargés.`);
+}
+
+function sauvegarderAccepter() {
+  const array = Array.from(listeAcceptes);
+  fs.writeFileSync(path, JSON.stringify(array, null, 2));
+}
+
 function sauvegarderRefus() {
   const array = Array.from(listeRefuses);
   fs.writeFileSync(path, JSON.stringify(array, null, 2));
@@ -191,6 +204,9 @@ bot.on("messageReactionAdd", async (reaction, user) => {
       .fetch(studentId)
       .catch(() => null);
     if (student) {
+      listeAcceptes.add(studentId);
+      sauvegarderAccepter();
+      
       const newRole = reaction.message.guild.roles.create({
         name: `i-${intervenants + 1}`,
         color: 0xff0000,
