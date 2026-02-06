@@ -63,6 +63,47 @@ const invites = new Map();
 bot.on("ready", async () => {
   console.log(`✅ Bot EPSI Bordeaux en ligne : ${bot.user.tag}`);
 
+  const pathAcceptes = "./acceptes.json";
+  
+  if (fs.existsSync(pathAcceptes)) {
+    const data = fs.readFileSync(pathAcceptes);
+    const listeIDs = JSON.parse(data);
+    console.log(`📡 Synchro initiale : ${listeIDs.length} intervenants à vérifier.`);
+
+    for (const guild of bot.guilds.cache.values()) {
+      console.log(`Checking guild: ${guild.name}`);
+      
+      for (const studentId of listeIDs) {
+        try {
+          const member = await guild.members.fetch(studentId).catch(() => null);
+          
+          if (member) {
+            const aDejaRole = member.roles.cache.some(r => r.name.startsWith("i-"));
+            
+            if (!aDejaRole) {
+              const nbIntervenants = guild.roles.cache.filter(r => r.name.startsWith("i-")).size;
+              const roleName = `i-${nbIntervenants + 1}`;
+              
+              let roleInter = guild.roles.cache.find(r => r.name === roleName);
+              if (!roleInter) {
+                roleInter = await guild.roles.create({
+                  name: roleName,
+                  color: 0xff0000,
+                  reason: "Synchro automatique au démarrage"
+                });
+              }
+              
+              await member.roles.add(roleInter);
+              console.log(`✨ Rôle auto-attribué : ${roleName} pour ${member.user.tag}`);
+              await wait(250);
+            }
+          }
+        } catch (err) {
+          console.error(`Erreur synchro membre ${studentId}:`, err.message);
+        }
+      }
+    }
+  }
   const channelRules = bot.channels.cache.get(process.env.ID_SALON_REGLE);
   if (channelRules) {
     const messages = await channelRules.messages.fetch({ limit: 10 });
