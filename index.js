@@ -15,6 +15,7 @@ const {
 } = require("discord.js");
 const fs = require("fs");
 const path = "./refus.json";
+const pathAccept = "./acceptes.json";
 
 let listeRefuses = new Set();
 if (fs.existsSync(path)) {
@@ -25,16 +26,16 @@ if (fs.existsSync(path)) {
 }
 
 let listeAcceptes = new Set();
-if (fs.existsSync(path)) {
-  const data = fs.readFileSync(path);
+if (fs.existsSync(pathAccept)) {
+  const data = fs.readFileSync(pathAccept);
   const array = JSON.parse(data);
   listeAcceptes = new Set(array);
-  console.log(`📂 ${listeAcceptes.size} utilisateur(s) refusé(s) chargés.`);
+  console.log(`📂 ${listeAcceptes.size} utilisateur(s) accepté(s) chargés.`);
 }
 
 function sauvegarderAccepter() {
   const array = Array.from(listeAcceptes);
-  fs.writeFileSync(path, JSON.stringify(array, null, 2));
+  fs.writeFileSync(pathAccept, JSON.stringify(array, null, 2));
 }
 
 function sauvegarderRefus() {
@@ -206,7 +207,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
     if (student) {
       listeAcceptes.add(studentId);
       sauvegarderAccepter();
-      
+
       const newRole = reaction.message.guild.roles.create({
         name: `i-${intervenants + 1}`,
         color: 0xff0000,

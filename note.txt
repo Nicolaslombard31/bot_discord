@@ -11,3 +11,15 @@
 2 catégorie en plus
 ou 2 rôles distinc
 ou ...
+
+
+
+questions pour Jacques:
+    - au momment du changement de promos est-ce qu'il vaudrais pas mieux supprimer tous les salons pour pas que l'année 
+d'après est les réponse?
+    - ne vaut il pas mieux faire une listes de chaque promo dans un fichier json comme sa quand on recrée un serveur 
+parce que l'ancien on la saturé et bien on a pas a redemander a choisir?
+    - pour le lien eternélle de RE tu crois pas qui auras des petits malin qui vont le partager? et donc que peut on 
+faire contre sa?
+    - qui a accés au salon des alumni? et a quoi on accés les alumni?
+    - 
