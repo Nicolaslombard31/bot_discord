@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const {
   Client,
@@ -57,7 +57,7 @@ bot.on("ready", async () => {
         .setTitle("⚖️ Règlement de la communauté EPSI")
         .setColor(0x2ecc71)
         .setDescription(
-          "Bienvenue ! Pour accéder à l'intégralité du serveur, merci de prendre connaissance des règles suivantes :"
+          "Bienvenue ! Pour accéder à l'intégralité du serveur, merci de prendre connaissance des règles suivantes :",
         )
         .addFields(
           {
@@ -82,7 +82,7 @@ bot.on("ready", async () => {
             name: "⚠️ Sanctions",
             value:
               "• Non-respect des règles peut entraîner des avertissements ou bannissements de la part des modérateurs.",
-          }
+          },
         )
         .setFooter({
           text: "Clique sur le bouton ci-dessous pour accepter le règlement",
@@ -92,7 +92,7 @@ bot.on("ready", async () => {
         new ButtonBuilder()
           .setCustomId("accept_rules")
           .setLabel("J'ai lu et j'accepte")
-          .setStyle(ButtonStyle.Success)
+          .setStyle(ButtonStyle.Success),
       );
 
       await channelRules.send({ embeds: [embedRules], components: [row] });
@@ -105,7 +105,7 @@ bot.on("ready", async () => {
     if (oldMessages.size > 0)
       await channel.bulkDelete(oldMessages).catch(() => null);
     const sentMessage = await channel.send(
-      "Choisissez un rôle en réagissant à ce message !:\n👨‍🏫 : Intervenant, \n🎓 : B1, \n📖 : B2(SN2), \n💻 : B3, \n🚀 : M1, \n🏆 : M2"
+      "Choisissez un rôle en réagissant à ce message !:\n👨‍🏫 : Intervenant, \n🎓 : B1, \n📖 : B2(SN2), \n💻 : B3, \n🚀 : M1, \n🏆 : M2",
     );
 
     await sentMessage.react("👨‍🏫");
@@ -121,7 +121,7 @@ bot.on("ready", async () => {
     if (oldMessages.size > 0)
       await channelRE.bulkDelete(oldMessages).catch(() => null);
     const sentMessageRE = await channelRE.send(
-      "Bienvenue dans le salon de Recherche d'Entreprise ! veuillers choisir votre promotion en réagissant à ce message :\n📱 : B3 CDA, \n⚙️ : B3 ASRBD, \n🧠 : M1 IA, \n🛡️ : M1 cyber, \n👨‍💻 : M1 Dev, \n🏗️ : M1 infra"
+      "Bienvenue dans le salon de Recherche d'Entreprise ! veuillers choisir votre promotion en réagissant à ce message :\n📱 : B3 CDA, \n⚙️ : B3 ASRBD, \n🧠 : M1 IA, \n🛡️ : M1 cyber, \n👨‍💻 : M1 Dev, \n🏗️ : M1 infra",
     );
     await sentMessageRE.react("📱");
     await sentMessageRE.react("⚙️");
@@ -134,7 +134,7 @@ bot.on("ready", async () => {
     const firstInvites = await guild.invites.fetch();
     invites.set(
       guild.id,
-      new Map(firstInvites.map((invite) => [invite.code, invite.uses]))
+      new Map(firstInvites.map((invite) => [invite.code, invite.uses])),
     );
   });
 });
@@ -142,7 +142,7 @@ bot.on("ready", async () => {
 bot.on("messageReactionAdd", async (reaction, user) => {
   if (user.bot) return;
   const intervenants = reaction.message.guild.roles.cache.filter((r) =>
-    r.name.startsWith("i-")
+    r.name.startsWith("i-"),
   ).size;
   if (reaction.partial) {
     try {
@@ -154,7 +154,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
   }
   const memberWhoReacted = await reaction.message.guild.members.fetch(user.id);
   const hasIntervenantRole = memberWhoReacted.roles.cache.some((r) =>
-    r.name.startsWith("i-")
+    r.name.startsWith("i-"),
   );
   if (reaction.emoji.name === "👨‍🏫") {
     if (!hasIntervenantRole) {
@@ -162,7 +162,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
         const admin = bot.channels.cache.get(process.env.ID_SALON_ADMIN);
         if (admin) {
           const sentMessage = await admin.send(
-            `@Modérateur L'utilisateur <@${user.id}> a demandé le rôle Intervenant.\n Son ID est \`${user.id}\`.`
+            `@Modérateur L'utilisateur <@${user.id}> a demandé le rôle Intervenant.\n Son ID est \`${user.id}\`.`,
           );
           await sentMessage.react("✅");
           await sentMessage.react("❌");
@@ -173,7 +173,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
           new ButtonBuilder()
             .setCustomId(`help_request_${user.id}`)
             .setLabel("Demander de l'aide")
-            .setStyle(ButtonStyle.Primary)
+            .setStyle(ButtonStyle.Primary),
         );
         await user
           .send({
@@ -229,7 +229,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
     if (student) {
       if (reaction.message.guild.roles.cache.find((r) => r.name === "B1")) {
         const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "B1"
+          (r) => r.name === "B1",
         );
         await student.roles.add(role.id);
       }
@@ -243,7 +243,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
     if (student) {
       if (reaction.message.guild.roles.cache.find((r) => r.name === "B2")) {
         const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "B2"
+          (r) => r.name === "B2",
         );
         await student.roles.add(role.id);
       }
@@ -257,7 +257,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
     if (student) {
       if (reaction.message.guild.roles.cache.find((r) => r.name === "B3")) {
         const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "B3"
+          (r) => r.name === "B3",
         );
         await student.roles.add(role.id);
       }
@@ -271,7 +271,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
     if (student) {
       if (reaction.message.guild.roles.cache.find((r) => r.name === "M1")) {
         const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "M1"
+          (r) => r.name === "M1",
         );
         await student.roles.add(role.id);
       }
@@ -285,7 +285,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
     if (student) {
       if (reaction.message.guild.roles.cache.find((r) => r.name === "M2")) {
         const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "M2"
+          (r) => r.name === "M2",
         );
         await student.roles.add(role.id);
       }
@@ -299,7 +299,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
     if (student) {
       if (reaction.message.guild.roles.cache.find((r) => r.name === "B3_CDA")) {
         const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "B3_CDA"
+          (r) => r.name === "B3_CDA",
         );
         await student.roles.add(role.id);
       }
@@ -315,7 +315,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
         reaction.message.guild.roles.cache.find((r) => r.name === "B3_ASRBD")
       ) {
         const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "B3_ASRBD"
+          (r) => r.name === "B3_ASRBD",
         );
         await student.roles.add(role.id);
       }
@@ -329,7 +329,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
     if (student) {
       if (reaction.message.guild.roles.cache.find((r) => r.name === "M1_IA")) {
         const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "M1_IA"
+          (r) => r.name === "M1_IA",
         );
         await student.roles.add(role.id);
       }
@@ -345,7 +345,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
         reaction.message.guild.roles.cache.find((r) => r.name === "M1_Cyber")
       ) {
         const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "M1_Cyber"
+          (r) => r.name === "M1_Cyber",
         );
         await student.roles.add(role.id);
       }
@@ -359,7 +359,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
     if (student) {
       if (reaction.message.guild.roles.cache.find((r) => r.name === "M1_Dev")) {
         const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "M1_Dev"
+          (r) => r.name === "M1_Dev",
         );
         await student.roles.add(role.id);
       }
@@ -375,7 +375,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
         reaction.message.guild.roles.cache.find((r) => r.name === "M1_Infra")
       ) {
         const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "M1_Infra"
+          (r) => r.name === "M1_Infra",
         );
         await student.roles.add(role.id);
       }
@@ -431,7 +431,9 @@ bot.on("messageCreate", async (message) => {
   if (!message.guild) {
     console.log(`💬 MP reçu de ${message.author.tag} : ${message.content}`);
 
-    const questionChannel = bot.channels.cache.get(process.env.ID_SALON_QUESTIONS);
+    const questionChannel = bot.channels.cache.get(
+      process.env.ID_SALON_QUESTIONS,
+    );
 
     if (questionChannel) {
       if (questionChannel.type === 15) {
@@ -461,7 +463,7 @@ bot.on("messageCreate", async (message) => {
     if (hasRole) {
       message.reply(
         `Commande de création lancée ! Envoie maintenant le **nom du salon**, le **nom de la catégorie** et si c'est pour les 
-        BTS mettait BTS(séparés par un espace, example 'Math B1 BTS').`
+        BTS mettait BTS(séparés par un espace, example 'Math B1 BTS').`,
       );
 
       const filter = (m) => m.author.id === message.author.id;
@@ -473,47 +475,43 @@ bot.on("messageCreate", async (message) => {
           const args = response.content.split(" ");
           const category = message.guild.channels.cache.find(
             (c) =>
-              c.name.toLowerCase() === args[1].toLowerCase() && c.type === 4
+              c.name.toLowerCase() === args[1].toLowerCase() && c.type === 4,
           );
           const channelName = args[0];
           const categoryId = category ? category.id : null;
 
           if (!channelName || !categoryId) {
             return message.reply(
-              "Il manque des informations. Recommence la commande !"
+              "Il manque des informations. Recommence la commande !",
             );
           }
           const roleInter = message.member.roles.cache.find((r) =>
-            r.name.startsWith("i-")
+            r.name.startsWith("i-"),
           );
           if (!roleInter) {
             return message.reply(
-              "Erreur : Je n'ai pas trouvé votre rôle d'intervenant (commençant par 'i-')."
+              "Erreur : Je n'ai pas trouvé votre rôle d'intervenant (commençant par 'i-').",
             );
           }
           const rolepromo = message.guild.roles.cache.find(
-            (r) => r.name.toLowerCase() === category.name.toLowerCase()
+            (r) => r.name.toLowerCase() === category.name.toLowerCase(),
           );
           if (!rolepromo) {
             return message.reply(
-              "Erreur : Je n'ai pas trouvé le rôle de la promo."
+              "Erreur : Je n'ai pas trouvé le rôle de la promo.",
             );
           }
-          const rolebtsb1 = message.guild.roles.cache.find(
-            (r) => r.name.startsWith("BTS_B1")
+          const rolebtsb1 = message.guild.roles.cache.find((r) =>
+            r.name.startsWith("BTS_B1"),
           );
           if (!rolebtsb1) {
-            return message.reply(
-              "Erreur : Je n'ai pas trouvé le rôle BTS."
-            );
+            return message.reply("Erreur : Je n'ai pas trouvé le rôle BTS.");
           }
-          const rolebtsb2 = message.guild.roles.cache.find(
-            (r) => r.name.startsWith("BTS_B2")
+          const rolebtsb2 = message.guild.roles.cache.find((r) =>
+            r.name.startsWith("BTS_B2"),
           );
           if (!rolebtsb2) {
-            return message.reply(
-              "Erreur : Je n'ai pas trouvé le rôle BTS."
-            );
+            return message.reply("Erreur : Je n'ai pas trouvé le rôle BTS.");
           }
 
           if (args[2] && args[2].toLowerCase() === "bts_b1") {
@@ -544,7 +542,7 @@ bot.on("messageCreate", async (message) => {
                 },
               ],
             });
-          }else if (args[2] && args[2].toLowerCase() === "bts_b2") {
+          } else if (args[2] && args[2].toLowerCase() === "bts_b2") {
             const newChannel = await message.guild.channels.create({
               name: channelName,
               type: 0,
@@ -572,7 +570,7 @@ bot.on("messageCreate", async (message) => {
                 },
               ],
             });
-          }else{
+          } else {
             const newChannel = await message.guild.channels.create({
               name: channelName,
               type: 0,
@@ -605,7 +603,7 @@ bot.on("messageCreate", async (message) => {
         })
         .catch(() => {
           message.reply(
-            "Temps écoulé ! Tu as mis trop de temps à répondre, commande annulée."
+            "Temps écoulé ! Tu as mis trop de temps à répondre, commande annulée.",
           );
         });
     } else {
@@ -614,28 +612,76 @@ bot.on("messageCreate", async (message) => {
   }
   const moderateur = message.member.roles.cache.has(process.env.ID_ROLE_ADMIN);
   if (message.content.startsWith("!changementpromo")) {
-    console.log(`🔄 Commande de promotion lancée par ${message.author.tag}`);
     if (moderateur) {
-      console.log(`✅ ${message.author.tag} est autorisé à lancer les promotions.`);
-      let filePromos = ["M2","M1", "B3", "B2", "B1","BTS_B2","BTS_B1"];
+      const category = [process.env.ID_CATEGORIE_B1, process.env.ID_CATEGORIE_B2, process.env.ID_CATEGORIE_B3, process.env.ID_CATEGORIE_M1, process.env.ID_CATEGORIE_M2]
+      console.log(
+        `✅ ${message.author.tag} est autorisé à lancer les promotions.`,
+      );
+
+      for (let i = 0; i < category.length; i++) {
+        const categoryID = message.guild.channels.cache.get(category[i]);
+
+        if (!categoryID) {
+          return console.log("❌ Catégorie introuvable.");
+        }
+
+        const channelsToDelete = message.guild.channels.cache.filter(
+          (c) => c.parentId === categoryID.id,
+        );
+
+        console.log(
+          `🧹 Suppression de ${channelsToDelete.size} salons dans la catégorie ${category.name}...`,
+        );
+
+        for (const [id, channel] of channelsToDelete) {
+          try {
+            await channel.delete("Nettoyage automatique de la catégorie");
+            console.log(`✅ Salon supprimé : ${channel.name}`);
+
+            await wait(500);
+          } catch (err) {
+            console.error(
+              `❌ Erreur lors de la suppression de ${channel.name}:`,
+              err.message,
+            );
+          }
+        }
+      }
+      console.log("✨ Nettoyage terminé.");
+
+      let filePromos = ["M2", "M1", "B3", "B2", "B1", "BTS_B2", "BTS_B1"];
       const cible = {
-        "M2": "Alumni",
-        "M1": "M2",
-        "B3": "M1",
-        "BTS_B2": "B3",
-        "B2": "B3",
-        "BTS_B1": "BTS_B2",
-        "B1": "B2"
+        M2: "Alumni",
+        M1: "M2",
+        B3: "M1",
+        BTS_B2: "B3",
+        B2: "B3",
+        BTS_B1: "BTS_B2",
+        B1: "B2",
       };
       const tousLesMembres = await message.guild.members.fetch();
-      const elevesUniquement = tousLesMembres.filter(m => !m.user.bot);
-      const countB1 = elevesUniquement.filter(m => m.roles.cache.some(r => r.name === "B1")).size;
-      const countB2 = elevesUniquement.filter(m => m.roles.cache.some(r => r.name === "B2")).size;
-      const countB3 = elevesUniquement.filter(m => m.roles.cache.some(r => r.name === "B3")).size;
-      const countM1 = elevesUniquement.filter(m => m.roles.cache.some(r => r.name === "M1")).size;
-      const countM2 = elevesUniquement.filter(m => m.roles.cache.some(r => r.name === "M2")).size;
-      const countBTSB1 = elevesUniquement.filter(m => m.roles.cache.some(r => r.name === "BTS_B1")).size;
-      const countBTSB2 = elevesUniquement.filter(m => m.roles.cache.some(r => r.name === "BTS_B2")).size;
+      const elevesUniquement = tousLesMembres.filter((m) => !m.user.bot);
+      const countB1 = elevesUniquement.filter((m) =>
+        m.roles.cache.some((r) => r.name === "B1"),
+      ).size;
+      const countB2 = elevesUniquement.filter((m) =>
+        m.roles.cache.some((r) => r.name === "B2"),
+      ).size;
+      const countB3 = elevesUniquement.filter((m) =>
+        m.roles.cache.some((r) => r.name === "B3"),
+      ).size;
+      const countM1 = elevesUniquement.filter((m) =>
+        m.roles.cache.some((r) => r.name === "M1"),
+      ).size;
+      const countM2 = elevesUniquement.filter((m) =>
+        m.roles.cache.some((r) => r.name === "M2"),
+      ).size;
+      const countBTSB1 = elevesUniquement.filter((m) =>
+        m.roles.cache.some((r) => r.name === "BTS_B1"),
+      ).size;
+      const countBTSB2 = elevesUniquement.filter((m) =>
+        m.roles.cache.some((r) => r.name === "BTS_B2"),
+      ).size;
       console.log(`📊 Effectifs avant promotion : B1=${countB1}, B2=${countB2}, B3=${countB3}, M1=${countM1}, M2=${countM2}, 
         BTS_B1=${countBTSB1}, BTS_B2=${countBTSB2}`);
       while (filePromos.length > 0) {
@@ -643,14 +689,26 @@ bot.on("messageCreate", async (message) => {
         const nomAnciennePromo = filePromos.shift();
         const nomNouvellePromo = cible[nomAnciennePromo];
 
-        const roleAncien = message.guild.roles.cache.find(r => r.name === nomAnciennePromo);
-        const roleNouveau = message.guild.roles.cache.find(r => r.name === nomNouvellePromo);
+        const roleAncien = message.guild.roles.cache.find(
+          (r) => r.name === nomAnciennePromo,
+        );
+        const roleNouveau = message.guild.roles.cache.find(
+          (r) => r.name === nomNouvellePromo,
+        );
 
         if (roleAncien && roleNouveau) {
-          console.log(`Traitement de la promotion : ${nomAnciennePromo} -> ${nomNouvellePromo}`);
-          let listeAEvoluer = Array.from(elevesUniquement.filter(m => m.roles.cache.has(roleAncien.id)).values());
+          console.log(
+            `Traitement de la promotion : ${nomAnciennePromo} -> ${nomNouvellePromo}`,
+          );
+          let listeAEvoluer = Array.from(
+            elevesUniquement
+              .filter((m) => m.roles.cache.has(roleAncien.id))
+              .values(),
+          );
 
-          console.log(`Promotion des ${nomAnciennePromo} (${listeAEvoluer.length} élèves)`);
+          console.log(
+            `Promotion des ${nomAnciennePromo} (${listeAEvoluer.length} élèves)`,
+          );
 
           while (listeAEvoluer.length > 0) {
             const membre = listeAEvoluer.shift();
@@ -663,8 +721,10 @@ bot.on("messageCreate", async (message) => {
             }
           }
         }
-      } 
-      message.channel.send("✅ **Opération terminée : toutes les promotions ont migré !**");
+      }
+      message.channel.send(
+        "✅ **Opération terminée : toutes les promotions ont migré !**",
+      );
     }
   }
 });
@@ -701,7 +761,7 @@ bot.on("guildMemberAdd", async (member) => {
   const oldInvites = invites.get(member.guild.id);
 
   const inviteUsed = newInvites.find(
-    (i) => i.uses > (oldInvites.get(i.code) || 0)
+    (i) => i.uses > (oldInvites.get(i.code) || 0),
   );
 
   if (inviteUsed && inviteUsed.code === process.env.INVITE_CODE_SPECIAL) {
@@ -715,7 +775,7 @@ bot.on("guildMemberAdd", async (member) => {
 
   invites.set(
     member.guild.id,
-    new Map(newInvites.map((invite) => [invite.code, invite.uses]))
+    new Map(newInvites.map((invite) => [invite.code, invite.uses])),
   );
 });
 
@@ -731,18 +791,18 @@ bot.on("autoModerationActionExecution", async (execution) => {
     }
 
     const roleRestriction = execution.guild.roles.cache.find(
-      (r) => r.name === "Restriction"
+      (r) => r.name === "Restriction",
     );
     const roleMember = execution.guild.roles.cache.find(
-      (r) => r.name === "Membre"
+      (r) => r.name === "Membre",
     );
     const roleMemberRE = execution.guild.roles.cache.find(
-      (r) => r.name === "Membre_RE"
+      (r) => r.name === "Membre_RE",
     );
 
     if (!roleRestriction) {
       console.log(
-        "⚠️ Le rôle 'restriction' n'existe pas. Vérifie l'orthographe (minuscules/majuscules)."
+        "⚠️ Le rôle 'restriction' n'existe pas. Vérifie l'orthographe (minuscules/majuscules).",
       );
       return;
     }
@@ -760,14 +820,14 @@ bot.on("autoModerationActionExecution", async (execution) => {
       const admin = bot.channels.cache.get(process.env.ID_SALON_ADMIN);
       if (admin) {
         const sentMessage = await admin.send(
-          `${member.user.tag} été un membre en RE et a été restreint par l'AutoMod.`
+          `${member.user.tag} été un membre en RE et a été restreint par l'AutoMod.`,
         );
       }
     }
 
     await member
       .send(
-        `⚠️ Ton message a été bloqué sur **${execution.guild.name}**. Tu as été restreint.`
+        `⚠️ Ton message a été bloqué sur **${execution.guild.name}**. Tu as été restreint.`,
       )
       .catch(() => console.log("DMs fermés."));
   } catch (error) {
@@ -780,7 +840,7 @@ bot.on("guildScheduledEventCreate", async (event) => {
   console.log(`Nouvel événement détecté : ${event.name}`);
 
   const forumChannel = event.guild.channels.cache.get(
-    process.env.ID_SALON_ANNONCE
+    process.env.ID_SALON_ANNONCE,
   );
 
   if (forumChannel && forumChannel.type === 15) {
@@ -802,7 +862,7 @@ bot.on("guildScheduledEventCreate", async (event) => {
             name: "Début",
             value: `<t:${Math.floor(event.scheduledStartTimestamp / 1000)}:F>`,
             inline: true,
-          }
+          },
         );
 
       if (imageURL) {
@@ -824,17 +884,17 @@ bot.on("guildScheduledEventCreate", async (event) => {
   }
 });
 
-bot.on('error', error => {
-    if (error.name === 'GatewayRateLimitError') {
-        console.warn(`⏳ [Rate Limit] Discord demande d'attendre ${error.data.retry_after}s. Le bot reste en ligne mais
+bot.on("error", (error) => {
+  if (error.name === "GatewayRateLimitError") {
+    console.warn(`⏳ [Rate Limit] Discord demande d'attendre ${error.data.retry_after}s. Le bot reste en ligne mais
            l'action est suspendue.`);
-    } else {
-        console.error('❌ [Erreur Client] :', error);
-    }
+  } else {
+    console.error("❌ [Erreur Client] :", error);
+  }
 });
 
-process.on('unhandledRejection', error => {
-    console.error('📌 [Rejet non géré] :', error);
+process.on("unhandledRejection", (error) => {
+  console.error("📌 [Rejet non géré] :", error);
 });
 
 bot.login(process.env.DISCORD_TOKEN);
