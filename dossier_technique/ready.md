@@ -2,14 +2,7 @@
 
 [page précédente](../dossier_technique/implementation.md)   [🏠](../)   [page suivante](../dossier_technique/reactions.md)
 
-## 1. Chargement des données:
-
-Le code que nous allons voir permet de charger les données des intérvenant et de ce qui ont été refusé dans le nouveau bot.
-
-![ready_05](../images/ready_05.png)
-![ready_06](../images/ready_06.png)
-
-## 2. Affichage des règles :
+## 1. Affichage des règles :
 
 Le code ci-dessous permet d'afficher les règles mis en place pour le site de l'Epsi.
 
