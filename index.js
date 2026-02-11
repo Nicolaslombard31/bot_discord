@@ -221,161 +221,29 @@ bot.on("messageReactionAdd", async (reaction, user) => {
       .delete()
       .catch((err) => console.error("Erreur suppression:", err));
   }
-  if (reaction.emoji.name === "🎓") {
+
+  let promos = {
+    "🎓": "B1",
+    "📖": "B2",
+    "💻": "B3",
+    "🚀": "M1",
+    "🏆": "M2",
+    "📱": "B3_CDA",
+    "⚙️": "B3_SRB",
+    "🧠": "M1_IA",
+    "🛡️": "M1_Cyber",
+    "👨‍💻": "M1_Dev",
+    "🏗️": "M1_Infra",
+  };
+  if (promos[reaction.emoji.name]) {
     const studentId = user.id;
     const student = await reaction.message.guild.members
       .fetch(studentId)
       .catch(() => null);
     if (student) {
-      if (reaction.message.guild.roles.cache.find((r) => r.name === "B1")) {
+      if (reaction.message.guild.roles.cache.find((r) => r.name === promos[reaction.emoji.name])) {
         const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "B1",
-        );
-        await student.roles.add(role.id);
-      }
-    }
-  }
-  if (reaction.emoji.name === "📖") {
-    const studentId = user.id;
-    const student = await reaction.message.guild.members
-      .fetch(studentId)
-      .catch(() => null);
-    if (student) {
-      if (reaction.message.guild.roles.cache.find((r) => r.name === "B2")) {
-        const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "B2",
-        );
-        await student.roles.add(role.id);
-      }
-    }
-  }
-  if (reaction.emoji.name === "💻") {
-    const studentId = user.id;
-    const student = await reaction.message.guild.members
-      .fetch(studentId)
-      .catch(() => null);
-    if (student) {
-      if (reaction.message.guild.roles.cache.find((r) => r.name === "B3")) {
-        const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "B3",
-        );
-        await student.roles.add(role.id);
-      }
-    }
-  }
-  if (reaction.emoji.name === "🚀") {
-    const studentId = user.id;
-    const student = await reaction.message.guild.members
-      .fetch(studentId)
-      .catch(() => null);
-    if (student) {
-      if (reaction.message.guild.roles.cache.find((r) => r.name === "M1")) {
-        const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "M1",
-        );
-        await student.roles.add(role.id);
-      }
-    }
-  }
-  if (reaction.emoji.name === "🏆") {
-    const studentId = user.id;
-    const student = await reaction.message.guild.members
-      .fetch(studentId)
-      .catch(() => null);
-    if (student) {
-      if (reaction.message.guild.roles.cache.find((r) => r.name === "M2")) {
-        const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "M2",
-        );
-        await student.roles.add(role.id);
-      }
-    }
-  }
-  if (reaction.emoji.name === "📱") {
-    const studentId = user.id;
-    const student = await reaction.message.guild.members
-      .fetch(studentId)
-      .catch(() => null);
-    if (student) {
-      if (reaction.message.guild.roles.cache.find((r) => r.name === "B3_CDA")) {
-        const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "B3_CDA",
-        );
-        await student.roles.add(role.id);
-      }
-    }
-  }
-  if (reaction.emoji.name === "⚙️") {
-    const studentId = user.id;
-    const student = await reaction.message.guild.members
-      .fetch(studentId)
-      .catch(() => null);
-    if (student) {
-      if (
-        reaction.message.guild.roles.cache.find((r) => r.name === "B3_ASRBD")
-      ) {
-        const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "B3_ASRBD",
-        );
-        await student.roles.add(role.id);
-      }
-    }
-  }
-  if (reaction.emoji.name === "🧠") {
-    const studentId = user.id;
-    const student = await reaction.message.guild.members
-      .fetch(studentId)
-      .catch(() => null);
-    if (student) {
-      if (reaction.message.guild.roles.cache.find((r) => r.name === "M1_IA")) {
-        const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "M1_IA",
-        );
-        await student.roles.add(role.id);
-      }
-    }
-  }
-  if (reaction.emoji.name === "🛡️") {
-    const studentId = user.id;
-    const student = await reaction.message.guild.members
-      .fetch(studentId)
-      .catch(() => null);
-    if (student) {
-      if (
-        reaction.message.guild.roles.cache.find((r) => r.name === "M1_Cyber")
-      ) {
-        const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "M1_Cyber",
-        );
-        await student.roles.add(role.id);
-      }
-    }
-  }
-  if (reaction.emoji.name === "👨‍💻") {
-    const studentId = user.id;
-    const student = await reaction.message.guild.members
-      .fetch(studentId)
-      .catch(() => null);
-    if (student) {
-      if (reaction.message.guild.roles.cache.find((r) => r.name === "M1_Dev")) {
-        const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "M1_Dev",
-        );
-        await student.roles.add(role.id);
-      }
-    }
-  }
-  if (reaction.emoji.name === "🏗️") {
-    const studentId = user.id;
-    const student = await reaction.message.guild.members
-      .fetch(studentId)
-      .catch(() => null);
-    if (student) {
-      if (
-        reaction.message.guild.roles.cache.find((r) => r.name === "M1_Infra")
-      ) {
-        const role = reaction.message.guild.roles.cache.find(
-          (r) => r.name === "M1_Infra",
+          (r) => r.name === promos[reaction.emoji.name],
         );
         await student.roles.add(role.id);
       }
