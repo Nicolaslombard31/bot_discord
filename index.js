@@ -382,7 +382,7 @@ bot.on("messageCreate", async (message) => {
             return message.reply("Erreur : Je n'ai pas trouvé le rôle BTS.");
           }
 
-          if (args[2] && args[2].toLowerCase() === "bts_b1") {
+          if (args[2] && args[2].toLowerCase() === "bts" && args[1].toLowerCase() === "b1") {
             const newChannel = await message.guild.channels.create({
               name: channelName,
               type: 0,
@@ -410,7 +410,7 @@ bot.on("messageCreate", async (message) => {
                 },
               ],
             });
-          } else if (args[2] && args[2].toLowerCase() === "bts_b2") {
+          } else if (args[2] && args[2].toLowerCase() === "bts" && args[1].toLowerCase() === "b2") {
             const newChannel = await message.guild.channels.create({
               name: channelName,
               type: 0,
@@ -688,7 +688,7 @@ bot.on("autoModerationActionExecution", async (execution) => {
       const admin = bot.channels.cache.get(process.env.ID_SALON_ADMIN);
       if (admin) {
         const sentMessage = await admin.send(
-          `${member.user.tag} été un membre en RE et a été restreint par l'AutoMod.`,
+          `${member.user.tag} était un membre en RE et a été restreint par l'AutoMod.`,
         );
       }
     }
