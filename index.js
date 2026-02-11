@@ -331,7 +331,7 @@ bot.on("messageCreate", async (message) => {
     if (hasRole) {
       message.reply(
         `Commande de création lancée ! Envoie maintenant le **nom du salon**, le **nom de la catégorie** et si c'est pour les 
-        BTS mettait BTS(séparés par un espace, example 'Math B1 BTS').`,
+        BTS mettez BTS(séparés par un espace, example 'Math B1 BTS').`,
       );
 
       const filter = (m) => m.author.id === message.author.id;
