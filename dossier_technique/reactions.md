@@ -26,23 +26,14 @@ Ensuite dans ce bout de code on vois le refus des modérateurs pour le rôle Int
 
 ## 4. Promos :
 
-Dans le code qui suis nous avons mis en place le faite que si un user met un certains emoji il sera mis dans une promos spécifique.
+Dans le code qui suis nous avons mis en place le faite que si un user met un certains emoji il sera mis dans une promos spécifique. Et on a fait la même chose pour les RE (Recherche d'Entreprise).
 
 ![reaction_05](../images/reaction_05.png)
-![reaction_06](../images/reaction_06.png)
-![reaction_07](../images/reaction_07.png)
-
-Et on a fait la même chose pour les RE (Recherche d'Entreprise).
-
-![reaction_08](../images/reaction_08.png)
-![reaction_09](../images/reaction_09.png)
-![reaction_10](../images/reaction_10.png)
-![reaction_11](../images/reaction_11.png)
 
 On a ensuite le retirage des rôles promos quand les user retire leurs emojis.
 
-![reaction_12](../images/reaction_12.png)
-![reaction_13](../images/reaction_13.png)
+![reaction_06](../images/reaction_06.png)
+![reaction_07](../images/reaction_07.png)
 
 
 [page précédente](../dossier_technique/ready.md)   [🏠](../)   [page suivante](../dossier_technique/create.md)
