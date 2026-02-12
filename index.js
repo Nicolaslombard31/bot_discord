@@ -197,7 +197,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
         reason:
           "Rôle créé pour l'utilisateur ayant demandé le rôle Intervenant",
       });
-      await student.roles.add((await newRole).id);
+      await student.roles.add((newRole).id);
       const targetChannel = reaction.message.guild.channels.cache.get(process.env.ID_SALON_CREATION);
       if (targetChannel) {
         await targetChannel.permissionOverwrites.create(newRole.id, {
@@ -509,7 +509,7 @@ bot.on("messageCreate", async (message) => {
         );
 
         console.log(
-          `🧹 Suppression de ${channelsToDelete.size} salons dans la catégorie ${category.name}...`,
+          `🧹 Suppression de ${channelsToDelete.size} salons dans la catégorie ${categoryID.name}...`,
         );
 
         for (const [id, channel] of channelsToDelete) {
