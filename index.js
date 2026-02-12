@@ -191,13 +191,24 @@ bot.on("messageReactionAdd", async (reaction, user) => {
       .fetch(studentId)
       .catch(() => null);
     if (student) {
-      const newRole = reaction.message.guild.roles.create({
+      const newRole = await reaction.message.guild.roles.create({
         name: `i-${intervenants + 1}`,
         color: 0xff0000,
         reason:
           "Rôle créé pour l'utilisateur ayant demandé le rôle Intervenant",
       });
       await student.roles.add((await newRole).id);
+      const targetChannel = reaction.message.guild.channels.cache.get(process.env.ID_SALON_CREATION);
+      if (targetChannel) {
+        await targetChannel.permissionOverwrites.create(newRole.id, {
+          ViewChannel: true,
+          SendMessages: true,
+          ReadMessageHistory: true
+        });
+        console.log(`✅ Autorisations ajoutées pour ${newRole.name} sur le salon ${targetChannel.name}`);
+      }else{
+        console.error("❌ Salon de création introuvable pour ajouter les permissions.");
+      }
     }
     await reaction.message
       .delete()
