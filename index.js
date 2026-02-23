@@ -15,6 +15,7 @@ const {
 } = require("discord.js");
 const fs = require("fs");
 const path = "./refus.json";
+const lang = require("./lang.json")
 
 let listeRefuses = new Set();
 if (fs.existsSync(path)) {
@@ -54,44 +55,22 @@ bot.on("ready", async () => {
     const messages = await channelRules.messages.fetch({ limit: 10 });
     if (messages.size === 0) {
       const embedRules = new EmbedBuilder()
-        .setTitle("⚖️ Règlement de la communauté EPSI")
+        .setTitle(lang.rules.title)
         .setColor(0x2ecc71)
         .setDescription(
-          "Bienvenue ! Pour accéder à l'intégralité du serveur, merci de prendre connaissance des règles suivantes :",
+          lang.rules.description,
         )
         .addFields(
-          {
-            name: "🤝 Entraide",
-            value:
-              "• Ici on s'entraide sur le code. Pas de jugement sur les erreurs des autres.",
-          },
-          {
-            name: "💬 Respect",
-            value:
-              "• Politesse avec les camarades et les intervenants. Utilisez vos vrais noms.",
-          },
-          {
-            name: "💻 Professionnalisme",
-            value: "• Utilisez les salons appropriés et soignez votre langage.",
-          },
-          {
-            name: "📚 EPSI",
-            value: "• Respectez les règles de l'EPSI.",
-          },
-          {
-            name: "⚠️ Sanctions",
-            value:
-              "• Non-respect des règles peut entraîner des avertissements ou bannissements de la part des modérateurs.",
-          },
+          lang.rules.fields.map((f) => ({ name: f.name, value: f.value })),
         )
         .setFooter({
-          text: "Clique sur le bouton ci-dessous pour accepter le règlement",
+          text: lang.rules.footer,
         });
 
       const row = new ActionRowBuilder().addComponents(
         new ButtonBuilder()
           .setCustomId("accept_rules")
-          .setLabel("J'ai lu et j'accepte")
+          .setLabel(lang.rules.button)
           .setStyle(ButtonStyle.Success),
       );
 
@@ -105,7 +84,7 @@ bot.on("ready", async () => {
     if (oldMessages.size > 0)
       await channel.bulkDelete(oldMessages).catch(() => null);
     const sentMessage = await channel.send(
-      "Choisissez un rôle en réagissant à ce message !:\n👨‍🏫 : Intervenant, \n🎓 : B1, \n📖 : B2(SN2), \n💻 : B3, \n🚀 : M1, \n🏆 : M2",
+      lang.roles.message,
     );
 
     await sentMessage.react("👨‍🏫");
@@ -121,7 +100,7 @@ bot.on("ready", async () => {
     if (oldMessages.size > 0)
       await channelRE.bulkDelete(oldMessages).catch(() => null);
     const sentMessageRE = await channelRE.send(
-      "Bienvenue dans le salon de Recherche d'Entreprise ! veuillers choisir votre promotion en réagissant à ce message :\n📱 : B3 CDA, \n⚙️ : B3 ASRBD, \n🧠 : M1 IA, \n🛡️ : M1 cyber, \n👨‍💻 : M1 Dev, \n🏗️ : M1 infra",
+      lang.roles.re_message,
     );
     await sentMessageRE.react("📱");
     await sentMessageRE.react("⚙️");
@@ -162,7 +141,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
         const admin = bot.channels.cache.get(process.env.ID_SALON_ADMIN);
         if (admin) {
           const sentMessage = await admin.send(
-            `@Modérateur L'utilisateur <@${user.id}> a demandé le rôle Intervenant.\n Son ID est \`${user.id}\`.`,
+            lang.intervenant.ask_admin,
           );
           await sentMessage.react("✅");
           await sentMessage.react("❌");
@@ -177,7 +156,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
         );
         await user
           .send({
-            content: `Votre demande de rôle Intervenant a déjà été refusée et nous ne pouvons plus l'activé. (Contactez un modérateur si vous voullez plus d'informations, cliquez sur le bouton ci-dessous pour alerter les modérateurs.`,
+            content: lang.intervenant.refused,
             components: [row],
           })
           .catch(() => null);
@@ -226,7 +205,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
       sauvegarderRefus();
 
       const dmChannel = await student.createDM();
-      dmChannel.send("Votre demande de rôle Intervenant a été refusée.");
+      dmChannel.send(lang.intervenant.error_dm).catch(() => null);
     }
     await reaction.message
       .delete()
@@ -341,8 +320,7 @@ bot.on("messageCreate", async (message) => {
   if (message.content === "!create") {
     if (hasRole) {
       message.reply(
-        `Commande de création lancée ! Envoie maintenant le **nom du salon**, le **nom de la catégorie** et si c'est pour les 
-        BTS mettez BTS(séparés par un espace, example 'Math B1 BTS').`,
+        lang.commands.create_start,
       );
 
       const filter = (m) => m.author.id === message.author.id;
@@ -361,7 +339,7 @@ bot.on("messageCreate", async (message) => {
 
           if (!channelName || !categoryId) {
             return message.reply(
-              "Il manque des informations. Recommence la commande !",
+              lang.commands.create_error,
             );
           }
           const roleInter = message.member.roles.cache.find((r) =>
@@ -482,7 +460,7 @@ bot.on("messageCreate", async (message) => {
         })
         .catch(() => {
           message.reply(
-            "Temps écoulé ! Tu as mis trop de temps à répondre, commande annulée.",
+            lang.commands.create_timeout,
           );
         });
     } else {
@@ -509,7 +487,7 @@ bot.on("messageCreate", async (message) => {
         );
 
         console.log(
-          `🧹 Suppression de ${channelsToDelete.size} salons dans la catégorie ${categoryID.name}...`,
+          lang.commands.migration_start,
         );
 
         for (const [id, channel] of channelsToDelete) {

@@ -1,0 +1,32 @@
+{
+  "rules": {
+    "title": "⚖️ Règlement de la communauté EPSI",
+    "description": "Bienvenue ! Pour accéder à l'intégralité du serveur, merci de prendre connaissance des règles suivantes :",
+    "fields": [
+      { "name": "🤝 Entraide", "value": "• Ici on s'entraide sur le code. Pas de jugement sur les erreurs des autres." },
+      { "name": "💬 Respect", "value": "• Politesse avec les camarades et les intervenants. Utilisez vos vrais noms." },
+      { "name": "💻 Professionnalisme", "value": "• Utilisez les salons appropriés et soignez votre langage." },
+      { "name": "📚 EPSI", "value": "• Respectez les règles de l'EPSI." },
+      { "name": "⚠️ Sanctions", "value": "• Non-respect des règles peut entraîner des avertissements ou bannissements." }
+    ],
+    "footer": "Clique sur le bouton ci-dessous pour accepter le règlement",
+    "button": "J'ai lu et j'accepte"
+  },
+  "roles": {
+    "message": "Choisissez un rôle en réagissant à ce message !:\n👨‍🏫 : Intervenant, \n🎓 : B1, \n📖 : B2(SN2), \n💻 : B3, \n🚀 : M1, \n🏆 : M2",
+    "re_message": "Bienvenue dans le salon de Recherche d'Entreprise ! veuillez choisir votre promotion :\n📱 : B3 CDA, \n⚙️ : B3 ASRBD, \n🧠 : M1 IA, \n🛡️ : M1 cyber, \n👨‍💻 : M1 Dev, \n🏗️ : M1 infra"
+  },
+  "intervenant": {
+    "ask_admin": "@Modérateur L'utilisateur <@{{user}}> a demandé le rôle Intervenant.\n Son ID est `{{user}}`.",
+    "refused": "Votre demande de rôle Intervenant a déjà été refusée et nous ne pouvons plus l'activer. (Contactez un modérateur pour plus d'informations).",
+    "success_dm": "Votre demande de rôle Intervenant a été acceptée.",
+    "error_dm": "Votre demande de rôle Intervenant a été refusée."
+  },
+  "commands": {
+    "create_start": "Commande de création lancée ! Envoie maintenant le **nom du salon**, le **nom de la catégorie** et si c'est pour les BTS mettez BTS (séparés par un espace, exemple 'Math B1 BTS').",
+    "create_timeout": "Temps écoulé ! Tu as mis trop de temps à répondre, commande annulée.",
+    "create_error": "Il manque des informations. Recommence la commande !",
+    "migration_start": "🚀 **Suppression terminée. Migration des élèves en cours...**",
+    "migration_done": "✅ **Opération terminée : toutes les promotions ont migré !**"
+  }
+}
