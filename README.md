@@ -49,7 +49,25 @@ ID_SALON_QUESTIONS='Mettez votre id du salon des questions ici'
 ID_SALON_ANNONCE='Mettez votre id du salon des annonces ici'
 ```
 
-4. Lancez le bot :
+4. Crée les Rôles suivant:
+
+il vous faut crée plusieurs rôle pour que le bot marche, il vous faut donc les rôles suivants:
+* B1
+* B2
+* B3
+* M1
+* M2
+* BTS_B1
+* BTS_B2
+* B3_CDA
+* B3_ASRBD
+* M1_IA
+* M1_Cyber
+* M1_Dev
+* M1_Infra
+* Alumni
+
+5. Lancez le bot :
 
 ```bash
 node .\index.js
