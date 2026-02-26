@@ -565,6 +565,66 @@ bot.on("autoModerationActionExecution", async (execution) => {
   }
 });
 
+// Événement déclenché dès qu'un nouvel événement (conférence, réunion, etc.) est créé sur le serveur
+bot.on("guildScheduledEventCreate", async (event) => {
+  console.log(`Nouvel événement détecté : ${event.name}`);
+
+  // Récupération de l'ID du salon forum via les variables d'environnement pour plus de sécurité
+  const forumChannel = event.guild.channels.cache.get(
+    process.env.ID_SALON_ANNONCE,
+  );
+
+  // Vérification de l'existence du salon et s'il s'agit bien d'un salon de type "Forum" (type 15)
+  if (forumChannel && forumChannel.type === 15) {
+    try {
+      // Récupération de l'image de couverture de l'événement en haute résolution (1024px)
+      const imageURL = event.coverImageURL({ size: 1024, extension: "png" });
+
+      const { EmbedBuilder } = require("discord.js");
+      
+      // Construction d'un message stylisé (Embed) pour présenter l'événement
+      const eventEmbed = new EmbedBuilder()
+        .setTitle(`Discussion : ${event.name}`)
+        .setDescription(event.description || "Aucune description fournie.")
+        .setColor(0x3498db) // Couleur bleue pour l'identité visuelle
+        .addFields(
+          {
+            name: "Lieu",
+            // Utilisation de la métadonnée du lieu ou valeur par défaut si c'est en vocal
+            value: event.entityMetadata?.location || "Salon vocal / Interne",
+            inline: true,
+          },
+          {
+            name: "Début",
+            // Conversion du timestamp en format date lisible directement par l'interface Discord
+            value: `<t:${Math.floor(event.scheduledStartTimestamp / 1000)}:F>`,
+            inline: true,
+          },
+        );
+
+      // Si une image de couverture existe, on l'ajoute à l'aperçu du message
+      if (imageURL) {
+        eventEmbed.setImage(imageURL);
+      }
+
+      // Création automatique d'un nouveau post (thread) dans le forum dédié
+      await forumChannel.threads.create({
+        name: `${event.name}`,
+        message: {
+          embeds: [eventEmbed],
+          // Mention du créateur de l'événement pour la traçabilité
+          content: `Un nouvel événement a été programmé par <@${event.creatorId}> !`,
+        },
+      });
+
+      console.log(`Forum avec image créé pour : ${event.name}`);
+    } catch (error) {
+      // Gestion des erreurs pour éviter que le bot ne crash en cas de problème réseau ou permission
+      console.error("Erreur lors de la création du post forum :", error);
+    }
+  }
+});
+
 // --- GESTION DES ERREURS GLOBALES ---
 
 bot.on("error", (error) => {
